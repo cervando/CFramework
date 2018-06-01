@@ -30,6 +30,7 @@ import kmiddle2.communications.Protocol;
 import kmiddle2.communications.fiels.Address;
 import kmiddle2.log.NodeLog;
 import kmiddle2.nodes.NodeConf;
+import kmiddle2.util.DefaultValues;
 
 public class Multicast extends Thread{
 	
@@ -58,7 +59,7 @@ public class Multicast extends Thread{
 	
 	public void setUp(){
 		try{
-			address = new Address("228.5.6.7", 6789 + nc.getEntityID());
+			address = new Address(DefaultValues.MULTICAST_ADDRESS, DefaultValues.MULTICAST_PORT + nc.getEntityID());
 			group = InetAddress.getByName(address.getIp()); 
 			socket = new MulticastSocket(address.getPort());
 			start();

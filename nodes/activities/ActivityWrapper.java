@@ -13,7 +13,7 @@ public class ActivityWrapper extends Node {
 	Class<? extends Activity> activity;
 	NodeLog log;
 	
-	public ActivityWrapper(Activity p, NodeAddress father, ActConf nc){
+	public ActivityWrapper(Activity p, NodeAddress father, ActivityConfiguration nc){
 		activity = p.getClass();
 		log = new NodeLog(p.getID(), p.getNamer(), nc.isDebug());
 		p.setLog(log);

@@ -5,12 +5,12 @@ import kmiddle2.log.NodeLog;
 public class ActivityMessageManager {
 
 	Class<? extends Activity> myClass;
-	ActConf nc;
+	ActivityConfiguration nc;
 	private ActivityWrapper pc;
 	private Activity p;
 	private NodeLog log;
 	
-	public ActivityMessageManager(Class<? extends Activity> myClass, ActivityWrapper pc, ActConf nc, NodeLog log){
+	public ActivityMessageManager(Class<? extends Activity> myClass, ActivityWrapper pc, ActivityConfiguration nc, NodeLog log){
 		this.myClass = myClass;
 		this.nc = nc;
 		this.pc = pc;
@@ -20,7 +20,7 @@ public class ActivityMessageManager {
 	public void receive(final int nodeID, final byte[] data){
 		//Determinate if there is enough resources, create a helper if there is in high load 
 		//Consider if a helper has already requested
-		if (nc.getType() == ActConf.TYPE_PARALLEL){
+		if (nc.getType() == ActivityConfiguration.TYPE_PARALLEL){
 			new Thread(){
 				public void run(){
 					try {
@@ -34,7 +34,7 @@ public class ActivityMessageManager {
 				}
 			}.start();
 			
-		}else if (nc.getType() == ActConf.TYPE_SINGLETON){
+		}else if (nc.getType() == ActivityConfiguration.TYPE_SINGLETON){
 			if ( p == null ){
 				try {
 					p = myClass.newInstance();

@@ -21,7 +21,7 @@ package kmiddle2.nodes.activities;
 
 import kmiddle2.nodes.NodeConf;
 
-public class ActConf extends NodeConf {
+public class ActivityConfiguration extends NodeConf {
 
 	private final int MASK_TYPE				= 	0b00000000000000000000000011100000;
 	public static final int TYPE_SINGLETON 	=	0b00000000000000000000000001000000;
@@ -32,15 +32,15 @@ public class ActConf extends NodeConf {
 	public static final int LENG_PYTHON 	=	0b00000000000000000000000100000000;
 	
 	
-	public ActConf(){
+	public ActivityConfiguration(){
 		this(0);
 	}
 	
-	public ActConf(int val){
+	public ActivityConfiguration(int val){
 		this(val, (byte)0 );
 	}
 	
-	public ActConf(int val, byte entityID){
+	public ActivityConfiguration(int val, byte entityID){
 		super(val, entityID);
 	}
 	

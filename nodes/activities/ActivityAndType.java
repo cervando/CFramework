@@ -5,9 +5,9 @@ public class ActivityAndType {
 	private Activity activity;
 	private int id;
 	private String className;
-	private ActConf pc;
+	private ActivityConfiguration pc;
 	
-	public ActivityAndType(String className, ActConf pc){
+	public ActivityAndType(String className, ActivityConfiguration pc){
 		this.className = className;
 		this.pc = pc;
 	}
@@ -20,7 +20,7 @@ public class ActivityAndType {
 		return className;
 	}
 	
-	public ActConf getActivityConfiguration(){
+	public ActivityConfiguration getActivityConfiguration(){
 		return pc;
 	}
 	

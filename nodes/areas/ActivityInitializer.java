@@ -10,7 +10,7 @@ import kmiddle2.communications.NodeAddress;
 import kmiddle2.communications.routeTables.SingletonNodeRouteTable;
 import kmiddle2.log.NodeLog;
 import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.activities.ActConf;
+import kmiddle2.nodes.activities.ActivityConfiguration;
 import kmiddle2.nodes.activities.Activity;
 import kmiddle2.nodes.activities.ActivityAndType;
 import kmiddle2.nodes.activities.ActivityWrapper;
@@ -28,10 +28,10 @@ public class ActivityInitializer {
 	
 	public void setUp(NodeAddress fatherAddress, NodeConf nc){
 		for(ActivityAndType a:process){
-			if ( a.getLenguage() == ActConf.LENG_JAVA ){
+			if ( a.getLenguage() == ActivityConfiguration.LENG_JAVA ){
 				createJavaActivity(a, fatherAddress, nc);
 				
-			}else if ( a.getLenguage() == ActConf.LENG_PYTHON ){
+			}else if ( a.getLenguage() == ActivityConfiguration.LENG_PYTHON ){
 				createPythonActivity(a, fatherAddress, nc);
 				
 			}
@@ -46,7 +46,7 @@ public class ActivityInitializer {
 			return;
 		}
 		
-		ActConf pc;
+		ActivityConfiguration pc;
 		pc = a.getActivityConfiguration();
 		pc.combine(nc.toInt());
 		
@@ -80,8 +80,8 @@ public class ActivityInitializer {
 			}
 				
 			
-			ActConf pc;
-			pc = new ActConf(nc.toInt() | a.getActivityConfiguration().toInt());
+			ActivityConfiguration pc;
+			pc = new ActivityConfiguration(nc.toInt() | a.getActivityConfiguration().toInt());
 			
 			String command = "python ";
 			command += OSHelper.preparePath(pythonLib + OSHelper.preparePathSegment("/node/activityWrapper.py")) + " ";
@@ -112,14 +112,14 @@ public class ActivityInitializer {
 	public void initAll(){
 		//NodeRouteTable routeTable = SingletonNodeRouteTable.getInstance();
 		for(final ActivityAndType a:process){
-			if ( a.getLenguage() == ActConf.LENG_JAVA ){
+			if ( a.getLenguage() == ActivityConfiguration.LENG_JAVA ){
 				new Thread(){
 					public void run(){
 						a.getActivity().init();
 					}
 				}.start();
 				
-			}else if ( a.getLenguage() == ActConf.LENG_PYTHON ){
+			}else if ( a.getLenguage() == ActivityConfiguration.LENG_PYTHON ){
 				//Send init to Activity python
 				//NodeAddress na = routeTable.get(a.getID());																		
 			}

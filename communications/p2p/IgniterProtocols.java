@@ -19,6 +19,11 @@ public class IgniterProtocols implements Protocol{
 	private NodeAddress serviceAddress = new NodeAddress(0,"127.0.0.1", DefaultValues.SERVICE_PORT);
 	private boolean isServiceUP = false;
 	
+	
+	/**
+	 * Creates a P2P communication socket
+	 * @param log
+	 */
 	public IgniterProtocols(NodeLog log){
 		try {
 			myCommunications = new P2PCommunications(this, new NodeConf(), log);

@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.activities.ActConf;
+import kmiddle2.nodes.activities.ActivityConfiguration;
 import kmiddle2.nodes.activities.Activity;
 import kmiddle2.nodes.activities.ActivityAndType;
 
@@ -47,10 +47,10 @@ public abstract class Area {
 	}
 	
 	protected void addProcess(Class<? extends Activity> className, int configurationValue){
-		addProcess(className, new ActConf(configurationValue));
+		addProcess(className, new ActivityConfiguration(configurationValue));
 	}
 	
-	protected void addProcess(Class<? extends Activity> className, ActConf nc){
+	protected void addProcess(Class<? extends Activity> className, ActivityConfiguration nc){
 		addProcess(className.getName(),nc);
 	}
 	
@@ -60,10 +60,10 @@ public abstract class Area {
 	}
 	
 	protected void addProcess(String className, int configurationValue){
-		addProcess(className, new ActConf(configurationValue));
+		addProcess(className, new ActivityConfiguration(configurationValue));
 	}
 	
-	protected void addProcess(String className, ActConf nc){
+	protected void addProcess(String className, ActivityConfiguration nc){
 		this.process.add( new ActivityAndType(className,nc) );
 	}
 	
@@ -75,29 +75,20 @@ public abstract class Area {
 	public void receive(int nodeID, byte[] data){}
 	public byte[] process(int nodeID, byte[] data){return data;}
 	
-	private Class<?>[] c;
-	private Object[] o;
-	public void setInitParameters(Class<?>[] c, Object[] o) {
-		this.c=c;
-		this.o=o;
+	private Class<?>[] parameterClasses;
+	private Object[] parameterValues;
+	public void setInitParameters(Class<?>[] classes, Object[] objects) {
+		this.parameterClasses=classes;
+		this.parameterValues=objects;
 	}
 	
 	public void init(){
 		Method m;
 		try {
-			m = this.getClass().getMethod("init", c);
-			m.invoke(this,o);
+			m = this.getClass().getMethod("init", parameterClasses);
+			m.invoke(this,parameterValues);
 		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			StringBuilder sb = new StringBuilder();
-			sb.append("(" + c[0].getSimpleName());
-			for( int i = 1; i< c.length; i++) {
-				sb.append("," + c[i].getSimpleName());
-			}
-			sb.append(")");
-			
-			System.out.println("Error geting Init method\n\tREVISA QUE LOS PARAMETROS PROPORCIONADOS EXISTAN EN EL CONSTRUCTOR DE LA CLASE\n\t"+ sb.toString());
-			e.printStackTrace();			
+			System.out.println("Error getting init method");
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Error invoking init method");

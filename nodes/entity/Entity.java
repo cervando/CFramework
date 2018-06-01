@@ -1,5 +1,6 @@
 	package kmiddle2.nodes.entity;
 
+import java.io.IOException;
 import java.net.BindException;
 
 import kmiddle2.communications.messages.MessageReceiverable;
@@ -26,24 +27,38 @@ public class Entity implements MessageReceiverable{
 		routeTable = SingletonNodeRouteTable.getInstance();
 		
 		try {
-			this.communications = new EntityProtocols(this, this.nc, DefaultValues.ENTITY_PORT, routeTable, log);						//init sockets p2p and multicast
+			//init sockets p2p and multicast
+			this.communications = new EntityProtocols(this, this.nc, DefaultValues.ENTITY_PORT, routeTable, log);						
 		} catch (BindException e) {
 			log.message("Port already in use");
+			log.message("It is posible that an entity with the EntityID " + nc.getEntityID() + " is already running");
+			log.message("Press Enter to close");
+			try {
+				System.in.read();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			return;
 		}
-		areas = new AreasManager(routeTable, communications, log);		
+		//Creates an area Manager 
+		areas = new AreasManager(routeTable, communications, log);
+		//The area manager init the list of Areas
 		areas.addList(areasNames, nc);		
 	}
 	
 	@Override
 	public void receive(Message m) {}
 	
+	
+	
 	public static void main(String[] args){
+		//This propertie allows compatibility with OS X
 		System.setProperty("java.net.preferIPv4Stack" , "true");
 		String list = "";
 		int nodeConfValue = 0;
 		
-		for ( int  i = 0; i < args.length; i+=2){																						//Extract arguments
+		//Extract arguments
+		for ( int  i = 0; i < args.length; i+=2){																						
 			if ( args[i].equals("--list"))
 				list = args[i+1];
 				
