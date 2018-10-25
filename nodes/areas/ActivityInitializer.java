@@ -40,9 +40,10 @@ public class ActivityInitializer {
 	
 	
 	public void createJavaActivity(ActivityAndType a, NodeAddress fatherAddress, NodeConf nc){
-		
+		log.developer("Adding class " + a.getClassName());
 		Activity activity = getActivityObject(a.getClassName());
 		if (activity == null ){
+			log.developer("Activity " + a.getClassName() + "Does not exist");
 			return;
 		}
 		

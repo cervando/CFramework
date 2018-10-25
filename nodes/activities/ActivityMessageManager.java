@@ -1,5 +1,6 @@
 package kmiddle2.nodes.activities;
 
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.log.NodeLog;
 
 public class ActivityMessageManager {
@@ -17,7 +18,7 @@ public class ActivityMessageManager {
 		this.log = log;
 	}
 	
-	public void receive(final int nodeID, final byte[] data){
+	public void receive(final int nodeID, final MessageMetadata m, final byte[] data){
 		//Determinate if there is enough resources, create a helper if there is in high load 
 		//Consider if a helper has already requested
 		if (nc.getType() == ActivityConfiguration.TYPE_PARALLEL){
@@ -27,7 +28,7 @@ public class ActivityMessageManager {
 						p = myClass.newInstance();
 						p.setLog(log);
 						p.setCore(pc);
-						p.receive(nodeID, data);
+						p.receive(nodeID, m, data);
 					} catch (InstantiationException | IllegalAccessException e) {
 						e.printStackTrace();
 					}
@@ -44,7 +45,7 @@ public class ActivityMessageManager {
 					e.printStackTrace();
 				}
 			}
-			p.receive(nodeID, data);
+			p.receive(nodeID, m, data);
 		}
 	}
 }

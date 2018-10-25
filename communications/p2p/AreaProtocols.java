@@ -3,6 +3,7 @@ package kmiddle2.communications.p2p;
 import java.net.BindException;
 
 import kmiddle2.communications.LocalJVMNodeAddress;
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.communications.NodeAddress;
 import kmiddle2.communications.Protocol;
 import kmiddle2.communications.fiels.Address;
@@ -48,13 +49,16 @@ public class AreaProtocols implements Protocol{
 		if ( m.getOperationCode() == OperationCodeConstants.DATA ){
 						DataMessage data = (DataMessage)m;
 						//Is a direct message for me
-						if ( data.getReceiverID() == myNodeID ) {
-							data(data.getSenderID(), data.getData());
+						//asdf
+						//if ( data.getReceiverID() == myNodeID ) {
+						//	data(data.getSenderID(), data.getMetaData(), data.getData());
+							//System.out.println("To me");
 						//Is a message to one of my childs
-						}else{
-							byte[] newData = process(myNodeID, data.getData());
-							sendData(data.getReceiverID(), data.getSenderID(), newData);
-						}
+						//}else{
+						routeData(data.getReceiverID(), data.getSenderID(), data.getMetaData(), data.getData());
+							//byte[] newData = //process(myNodeID, data.getData());
+							//sendData(data.getReceiverID(), data.getSenderID(), data.getMetaData(), newData);
+						//}
 						
 		}else if ( m.getOperationCode() == OperationCodeConstants.SINGIN_ACTIVITY ){
 						singInActivity( ((SingInActivityMessage)m).getNodeID(), address);
@@ -109,24 +113,28 @@ public class AreaProtocols implements Protocol{
 	}
 	
 	//Get ID from the IP, then send to user implementetation
-	private void data(int id, byte[] data){
+	/*private void data(int id, MessageMetadata m, byte[] data){
 		log.receive_debug(id, "");
-		areaWrapper.receive(id, data);
-	}
+		areaWrapper.receive(id, m, data);
+	}*/
 	
-	
+	/*
 	public byte[] process(int nodeID, byte[] data){
 		log.receive_debug(nodeID, "");
 		return areaWrapper.process(nodeID, data);
 	}
+	*/
 	
-	
-	public void sendData(int sendToID, byte[] data){
-		sendData(sendToID, 0, data);
+	public void routeData(int sendToID, int senderID, MessageMetadata meta, byte[] data){
+		areaWrapper.route(sendToID, senderID,meta,data);
 	}
 	
 	
-	public void sendData(int sendToID, int senderID, byte[] data){
+	public void sendData(int sendToID, MessageMetadata meta, byte[] data){
+		sendData(sendToID, 0, meta, data);
+	}
+	
+	public void sendData(int sendToID, int senderID, MessageMetadata meta, byte[] data){
 		if ( senderID == 0 )
 			senderID = myNodeID;
 		
@@ -150,7 +158,7 @@ public class AreaProtocols implements Protocol{
 			//What is the need for this if?
 			if ( senderID == myNodeID)
 				log.send_debug(sendToID, "");
-			myCommunications.send(node, new DataMessage(senderID, sendToID, data).toByteArray());
+			myCommunications.send(node, new DataMessage(senderID, sendToID,meta, data).toByteArray());
 		}
 	}
 

@@ -2,6 +2,7 @@ package kmiddle2.communications.p2p;
 
 import java.net.BindException;
 
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.communications.NodeAddress;
 import kmiddle2.communications.Protocol;
 import kmiddle2.communications.fiels.Address;
@@ -89,7 +90,7 @@ public class ActivityProtocols implements Protocol{
 	
 	//Get ID from the IP, then send to user implementetation
 	private void data(Address address, DataMessage msg){
-		proccessCore.receive(msg.getSenderID(), msg.getData());
+		proccessCore.receive(msg.getSenderID(), msg.getMetaData(), msg.getData());
 	}
 	
 	private void searchNodeRequest(int node){
@@ -97,13 +98,13 @@ public class ActivityProtocols implements Protocol{
 	}
 	
 	
-	public void sendData(int sendToID, byte[] data){
+	public void sendData(int sendToID, MessageMetadata meta, byte[] data){
 		log.send_debug(sendToID, "");
 		int senderID = myNodeID;
 		NodeAddress node;
 		if ( IDHelper.getAreaID(sendToID) != father.getName() ){
 			node = routeTable.get(IDHelper.getAreaID(sendToID) );
-			senderID = IDHelper.getAreaID(senderID);
+			//senderID = IDHelper.getAreaID(senderID);
 		}else{
 			node = routeTable.get(sendToID);	
 		}
@@ -116,7 +117,7 @@ public class ActivityProtocols implements Protocol{
 			//Add to pending messages
 		}else
 			
-			myCommunications.send(node, new DataMessage(senderID, sendToID, data).toByteArray());		
+			myCommunications.send(node, new DataMessage(senderID, sendToID, meta, data).toByteArray());		
 	}
 	
 	@Override

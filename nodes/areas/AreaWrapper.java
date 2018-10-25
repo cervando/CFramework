@@ -1,5 +1,6 @@
 package kmiddle2.nodes.areas;
 
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.communications.NodeAddress;
 import kmiddle2.communications.Protocol;
 import kmiddle2.communications.p2p.AreaProtocols;
@@ -51,22 +52,41 @@ public class AreaWrapper extends Node{
 		return protocols;
 	}
 
-	@Override
-	public void receive(int id, byte[] data) {
-		area.receive(id, data);
+	public void route(int sendToID, int senderID, MessageMetadata meta, byte[] data){
+		area.route(sendToID, senderID,meta,data);
 	}
 	
+	
+	@Override
+	public void receive(int id, MessageMetadata m, byte[] data) {
+		//area.receive(id, m, data);
+		System.out.println("How this was called?");
+	}
+	/*
 	public byte[] process(int nodeID, byte[] data){
 		return area.process(nodeID, data);
 	}
+	*/
 	
-	public void send(int nodeID, byte[] data){
-		protocols.sendData(nodeID, data);
+	
+	// Methods Related to send ---------------------------------------------------------
+	/*public void send(int nodeID, byte[] data){
+		protocols.sendData(nodeID, new MessageMetadata(0), data);
+	}*/
+	
+	
+	public void send(int nodeID, MessageMetadata m, byte[] data){
+		protocols.sendData(nodeID, m, data);
 	}
 	
-	public void send(int nodeID, int fromID, byte[] data){
-		protocols.sendData(nodeID, fromID, data);
+	public void send(int nodeID, int fromID, MessageMetadata m, byte[] data){
+		protocols.sendData(nodeID, fromID, m, data);
 	}
+	
+	
+	
+	
+	
 	
 	public void setFather(NodeAddress father){
 		this.father = father;

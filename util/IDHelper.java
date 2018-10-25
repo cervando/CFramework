@@ -28,15 +28,14 @@ public class IDHelper {
 	}
 	
 	public static final int generateID(int AreaID, int ActivityID, int index){
-		return  (AreaID << IDHelper.AreaLeftShift) + 
-				(ActivityID << IDHelper.ActivityLeftShift) + 
+		return  ((AreaID << IDHelper.AreaLeftShift) & AREAMASK) + 
+				((ActivityID << IDHelper.ActivityLeftShift) & ACTIVITYMASK) + 
 				index;
 	}
 	
 	public static final int generateID(String AreaName, int ActivityID, int index){
-		int areaID = (AreaName.hashCode()) << AreaLeftShift;
-		return  (areaID) + 
-				(ActivityID << IDHelper.ActivityLeftShift) + 
+		return  ((AreaName.hashCode() << AreaLeftShift ) & AREAMASK) +
+				((ActivityID << IDHelper.ActivityLeftShift) & ACTIVITYMASK) +
 				index;
 	}
 	

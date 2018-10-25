@@ -44,7 +44,7 @@ public class ServiceProtocol implements Protocol {
 		Message m =  Message.getMessage(message);
 		if ( m.getOperationCode() == OperationCodeConstants.IGNITE_ENTITY_LIST ){
 					final NodeConf nc = ((IgniteEntityListMessage)m).getNodeConfiguration();
-					if ( nc.isLocal() ){
+					if ( !nc.isLocal() ){
 									final String list = ((IgniteEntityListMessage)m).getList();
 									myCommunications.send(
 											new NodeAddress(0, 

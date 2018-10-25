@@ -1,5 +1,6 @@
 package kmiddle2.nodes.activities;
 
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.communications.NodeAddress;
 import kmiddle2.communications.Protocol;
 import kmiddle2.communications.p2p.ActivityProtocols;
@@ -22,12 +23,17 @@ public class ActivityWrapper extends Node {
 		manager = new ActivityMessageManager(activity, this, nc,log);
 	}
 	
+	public void send(int nodeID, MessageMetadata m, byte[] data){
+		protocols.sendData(nodeID, m, data);
+	}
+	
+	
 	public void send(int nodeID, byte[] data){
-		protocols.sendData(nodeID, data);
+		protocols.sendData(nodeID, new MessageMetadata(0), data);
 	}
  
-	public void receive(int nodeID, byte[] data){
-		manager.receive(nodeID, data);
+	public void receive(int nodeID, MessageMetadata m, byte[] data){
+		manager.receive(nodeID, m, data);
 	}
 
 	@Override

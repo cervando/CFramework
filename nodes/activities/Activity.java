@@ -1,5 +1,6 @@
 package kmiddle2.nodes.activities;
 
+import kmiddle2.communications.MessageMetadata;
 import kmiddle2.log.NodeLog;
 
 public abstract class Activity{
@@ -20,10 +21,19 @@ public abstract class Activity{
 	}
 	
 	protected void send(int nodeID, byte[] data){
-		core.send(nodeID, data);
+		if ( currentMetadata != null )
+			core.send(nodeID, currentMetadata, data);
+		else
+			core.send(nodeID, new MessageMetadata(0), data);
 	}
 	
-	public abstract void receive(int nodeID, byte[] data);
+	public abstract void receive(int nodeID,  byte[] data);
+	
+	protected MessageMetadata currentMetadata = null;
+	public void receive(int nodeID, MessageMetadata m, byte[] data) {
+		currentMetadata = m;
+		receive(nodeID,data);
+	}
 	
 	public Class<?> getNamer(){
 		return namer;

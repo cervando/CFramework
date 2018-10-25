@@ -19,6 +19,8 @@
  */
 package kmiddle2.util;
 
+import kmiddle2.communications.MessageMetadata;
+
 public class BinaryHelper {
 
 	public static short byteToShort(byte[] bin, int startIndex){
@@ -32,6 +34,41 @@ public class BinaryHelper {
 		r += (int)(bin[startIndex+1] & 0xFF);
 		return r;
 	}
+	
+	
+	
+	public static final int MessageMetadataBytesLengh = 4;
+	/**
+	 * Transforms a sequence of bytes into a Time unit
+	 * @param bin
+	 * @param startIndex
+	 * @return
+	 */
+	public static MessageMetadata byteToMessageMetaData(byte[] bin, int startIndex){
+		int r = 0;
+		r += (int)((bin[startIndex    ] << 24) & 0xFFFFFFFF);
+		r += (int)((bin[startIndex + 1] << 16) & 0xFFFFFF);
+		r += (int)((bin[startIndex + 2] << 8 ) & 0xFFFF);
+		r += (int)(bin[startIndex  + 3] 	   & 0xFF);
+		return new MessageMetadata(r);
+	}
+	/**
+	 * Transforms a Time unit into a sequence of bytes
+	 * @param bin
+	 * @param startIndex
+	 * @return
+	 */
+	public static byte[] MessageMetadataToByte( MessageMetadata meta ){
+		int i = meta.time;
+		byte r[] = new byte[4];
+		r[0] = (byte) ((i >> 24) & 0xFF);
+		r[1] = (byte) ((i >> 16) & 0xFF);
+		r[2] = (byte) ((i >> 8)  & 0xFF);
+		r[3] = (byte) (   i  	 & 0xFF);
+		return r;
+	}
+	
+	
 	
 	public static int byteToInt(byte[] bin, int startIndex){
 		int r = 0;
@@ -88,6 +125,9 @@ public class BinaryHelper {
 		r[3] = (byte) (   i  	 & 0xFF);
 		return r;
 	}
+	
+	
+	
 	
 	/**
 	 * Concatena dos arreglos de bytes y retorna el resultado
