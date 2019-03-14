@@ -1,13 +1,13 @@
-package kmiddle2.communications.p2p.sockets;
+package cFramework.communications.p2p.sockets;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.messages.HelloMessage;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.log.NodeLog;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.messages.HelloMessage;
+import cFramework.communications.messages.base.Message;
+import cFramework.log.NodeLog;
 
 public class TCPSocketSender extends Thread{
 
@@ -24,6 +24,11 @@ public class TCPSocketSender extends Thread{
 	}
 	
 	public void run(){
+		this.send();
+	}
+	
+	
+	public boolean send() {
 		try {
 			Socket s = new Socket(address.getIp(), address.getPort());
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
@@ -36,6 +41,8 @@ public class TCPSocketSender extends Thread{
 			//e.printStackTrace();
 			if ( !(Message.getMessage(this.message) instanceof HelloMessage))
 				log.debug(e.getMessage());
+			return false;
 		}
+		return true;
 	}
 }

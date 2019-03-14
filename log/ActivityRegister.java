@@ -1,7 +1,7 @@
-package kmiddle2.log;
+package cFramework.log;
 
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.util.IDHelper;
+import cFramework.communications.fiels.Address;
+import cFramework.util.IDHelper;
 
 public class ActivityRegister implements LogRegisterAble{
 
@@ -13,7 +13,7 @@ public class ActivityRegister implements LogRegisterAble{
 	}
 	
 	@Override
-	public String header(int name, Address address) {
+	public String header(long name, Address address) {
 		String msg =
 			 "<start>"
 				+ "<name>" + IDHelper.getNameAsString(namer, name) +"</name>\n"
@@ -27,7 +27,7 @@ public class ActivityRegister implements LogRegisterAble{
 	}
 
 	@Override
-	public String send(int name, String more) {
+	public String send(long name, String more) {
 		return 
 			"<SEND>"
 				+ "<to>"+ IDHelper.getNameAsString(namer, name)+ "</to>"
@@ -49,7 +49,7 @@ public class ActivityRegister implements LogRegisterAble{
 	}
 
 	@Override
-	public String send_debug(int name, String more) {
+	public String send_debug(long name, String more) {
 		return "<send> "
 				+ "<to>" + IDHelper.getNameAsString(namer, name) + "</to>"
 				+ (more.equals("")?  
@@ -60,7 +60,7 @@ public class ActivityRegister implements LogRegisterAble{
 	
 	
 	@Override
-	public String receive(int name, String more) {
+	public String receive(long name, String more) {
 		return "<receive> "
 					+ "<from>" + IDHelper.getNameAsString(namer, name)+ "</from>" 
 					+ (more.equals("")?  
@@ -75,7 +75,7 @@ public class ActivityRegister implements LogRegisterAble{
 	}
 	
 	@Override
-	public String receive_debug(int name, String more) {
+	public String receive_debug(long name, String more) {
 		return "<receive> "
 				+ "<sender> "
 					+ "<name>"  + IDHelper.getNameAsString(namer, name)+"</name>"
@@ -97,7 +97,7 @@ public class ActivityRegister implements LogRegisterAble{
 		return "<INFO>"+more+"</INFO>";
 	}
 	
-	public String info(String more, int node) {
+	public String info(String more, long node) {
 		// TODO Auto-generated method stub
 		return "<INFO>" + more + IDHelper.getNameAsString(namer, node) + "</INFO>";
 	}
@@ -110,14 +110,14 @@ public class ActivityRegister implements LogRegisterAble{
 		return "<developer>" + more + "</developer>";
 	}
 	
-	public String developer(String more, int node) {
+	public String developer(String more, long node) {
 		// TODO Auto-generated method stub
 		return "<developer>" + more + IDHelper.getNameAsString(namer, node) + "</developer>";
 	}
 	
 
 	@Override
-	public String saveRequest(int name, String more) {
+	public String saveRequest(long name, String more) {
 		// TODO Auto-generated method stub
 		return null;
 	}

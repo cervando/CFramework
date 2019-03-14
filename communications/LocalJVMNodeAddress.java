@@ -1,7 +1,7 @@
-package kmiddle2.communications;
+package cFramework.communications;
 
-import kmiddle2.communications.p2p.P2PCommunications;
-import kmiddle2.nodes.Node;
+import cFramework.communications.p2p.P2PCommunications;
+import cFramework.nodes.Node;
 
 public class LocalJVMNodeAddress extends NodeAddress{
 
@@ -11,7 +11,7 @@ public class LocalJVMNodeAddress extends NodeAddress{
 		this(address.getName(), address.getHost(), address.getPort(), objectReference);
 	}
 	
-	public LocalJVMNodeAddress(int name,String host,int port, Node objectReference){
+	public LocalJVMNodeAddress(long name,String host,int port, Node objectReference){
 		super(name, host, port);
 		this.nodeCommunicationsReference = objectReference.getProtocol().getCommunications();
 	}

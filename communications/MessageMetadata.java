@@ -1,4 +1,4 @@
-package kmiddle2.communications;
+package cFramework.communications;
 
 public class MessageMetadata {
 	public MessageMetadata(int time) {

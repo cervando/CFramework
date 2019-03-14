@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
-package kmiddle2.nodes.activities;
+package cFramework.nodes.activities;
 
-import kmiddle2.nodes.NodeConf;
+import cFramework.nodes.NodeConf;
 
 public class ActivityConfiguration extends NodeConf {
 

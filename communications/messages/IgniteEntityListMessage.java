@@ -1,9 +1,9 @@
-package kmiddle2.communications.messages;
+package cFramework.communications.messages;
 
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.nodes.NodeConf;
+import cFramework.util.BinaryHelper;
 
 public class IgniteEntityListMessage extends Message {
 

@@ -1,7 +1,7 @@
-package kmiddle2.log;
+package cFramework.log;
 
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.util.IDHelper;
+import cFramework.communications.fiels.Address;
+import cFramework.util.IDHelper;
 
 public class AreaRegistrer implements LogRegisterAble{
 	
@@ -17,7 +17,7 @@ public class AreaRegistrer implements LogRegisterAble{
 	}
 
 	@Override
-	public String header(int name, Address address) {
+	public String header(long name, Address address) {
 		String msg = 
 			  "<start>"
 				+ "<name>" + IDHelper.getNameAsString(namer, name) +"</name>\n"
@@ -32,7 +32,7 @@ public class AreaRegistrer implements LogRegisterAble{
 	}
 
 	@Override
-	public String send(int name, String more) {
+	public String send(long name, String more) {
 		return 
 			"<SEND>"
 				+ "<to>"+ IDHelper.getNameAsString(namer, name)+ "</to>"
@@ -51,7 +51,7 @@ public class AreaRegistrer implements LogRegisterAble{
 	}
 		
 	@Override
-	public String receive(int name, String more) {
+	public String receive(long name, String more) {
 		return "<RECEIVE> "
 					+ "<from>" + IDHelper.getNameAsString(namer, name)+ "</from>" 
 					+ (more.equals("")?  
@@ -66,7 +66,7 @@ public class AreaRegistrer implements LogRegisterAble{
 	}
 	
 	@Override
-	public String receive_debug(int name, String more) {
+	public String receive_debug(long name, String more) {
 		return "<RECEIVE> "
 				+ "<from> " + IDHelper.getNameAsString(namer, name) + "</from> "
 				+ (more.equals("")?  
@@ -78,7 +78,7 @@ public class AreaRegistrer implements LogRegisterAble{
 	
 
 	@Override
-	public String saveRequest(int name, String dataType) {
+	public String saveRequest(long name, String dataType) {
 		return "<SAVE_REQUEST>"+""/*NodeNameHelper.getAreaName(name)*/+""+dataType+ "</SAVE_REQUEST>";
 	}
 
@@ -92,7 +92,7 @@ public class AreaRegistrer implements LogRegisterAble{
 		return "<INFO>"+more+"</INFO>";
 	}
 	
-	public String info(String more, int node) {
+	public String info(String more, long node) {
 		// TODO Auto-generated method stub
 		return "<INFO>" + more + IDHelper.getNameAsString(namer, node) + "</INFO>";
 	}
@@ -104,14 +104,14 @@ public class AreaRegistrer implements LogRegisterAble{
 	}
 	
 	
-	public String developer(String more, int node) {
+	public String developer(String more, long node) {
 		// TODO Auto-generated method stub
 		return "<developer>" + more + IDHelper.getNameAsString(namer, node) + "</developer>";
 	}
 	
 
 	@Override
-	public String send_debug(int name, String more) {
+	public String send_debug(long name, String more) {
 		// TODO Auto-generated method stub
 		return send(name, more);
 	}

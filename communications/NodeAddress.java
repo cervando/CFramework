@@ -1,12 +1,12 @@
-package kmiddle2.communications;
+package cFramework.communications;
 
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.fiels.NullValueConstants;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.fiels.NullValueConstants;
+import cFramework.util.BinaryHelper;
 
 
 public class NodeAddress implements NullValueConstants {
-    protected int name = NULL_INT;
+    protected long name = NULL_INT;
 	protected Address address;
     protected int bits=0;
 	
@@ -14,13 +14,13 @@ public class NodeAddress implements NullValueConstants {
 		
 	}
 
-    public NodeAddress(int name) {
+    public NodeAddress(long name) {
         this.name = name;
 		address = new Address();
         bits+= (this.name==NULL_INT)?0:4;
     }
 
-	public NodeAddress(int name,String host,int port) {
+	public NodeAddress(long name,String host,int port) {
         this.name = name;
         address = new Address(host, port);
         bits+= (this.name==NULL_INT)?0:4;
@@ -28,7 +28,7 @@ public class NodeAddress implements NullValueConstants {
 		bits+= address.isNullPort()?0:1;
     }
 	
-	public NodeAddress(int name,Address a) {
+	public NodeAddress(long name,Address a) {
         this.name = name;
         address = a;
         bits+= (this.name==NULL_INT)?0:4;
@@ -36,7 +36,7 @@ public class NodeAddress implements NullValueConstants {
 		bits+= address.isNullPort()?0:1;
     }
 
-    public int getName() {
+    public long getName() {
         return name;
     }
 
@@ -56,6 +56,7 @@ public class NodeAddress implements NullValueConstants {
 		return address;
 	}
 	
+	/*
     @Override
     public boolean equals(Object obj) {
 		if(obj.getClass()==NodeAddress.class){
@@ -83,20 +84,23 @@ public class NodeAddress implements NullValueConstants {
 		hash = 47 * hash + this.bits;
 		return hash;
 	}
+	*/
 
+	
 	public byte[] toByteArray(){
 		return BinaryHelper.mergeByteArrays(
-				BinaryHelper.intToByte(this.getName()),
+				BinaryHelper.longToByte(this.getName()),
 				this.getAddress().toByteArray()
 		);
 	}
 
 	public static byte[] getNode(NodeAddress n){
 		return BinaryHelper.mergeByteArrays(
-				BinaryHelper.intToByte(n.getName()),
+				BinaryHelper.longToByte(n.getName()),
 				n.getAddress().toByteArray()
 		);
 	}
+	
 
     @Override
     public String toString() {
@@ -111,7 +115,7 @@ public class NodeAddress implements NullValueConstants {
 		return bits==0;
 	}
 
-	public void setName(int name){
+	public void setName(long name){
 		this.name = name;		
 	}
 	

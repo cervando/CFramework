@@ -1,10 +1,10 @@
-package kmiddle2.nodes;
+package cFramework.nodes;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.Protocol;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.Protocol;
 
 public abstract class Node {
 
 	public abstract Protocol getProtocol();
-	public abstract void receive(int id, MessageMetadata m, byte[] data);
+	public abstract void receive(long id, MessageMetadata m, byte[] data);
 }

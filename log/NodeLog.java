@@ -1,4 +1,4 @@
-package kmiddle2.log;
+package cFramework.log;
 
 /**
  * Kuayolotl Middleware System
@@ -28,9 +28,9 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.util.IDHelper;
-import kmiddle2.util.OSHelper;
+import cFramework.communications.fiels.Address;
+import cFramework.util.IDHelper;
+import cFramework.util.OSHelper;
 
 
 
@@ -86,7 +86,7 @@ public class NodeLog{
 	}
 	
 	
-	public NodeLog(int name, Class<?> namer, Boolean isDebug ){
+	public NodeLog(long name, Class<?> namer, Boolean isDebug ){
 		
 		this.isDebug = isDebug;
 		if ( IDHelper.isArea(name) )
@@ -138,20 +138,20 @@ public class NodeLog{
 	
 
 	
-	public void header(int name, Address address) {
+	public void header(long name, Address address) {
 		logger.severe(register.header(name, address));
 	}
 
 
-	public void send(int name, String more) {
+	public void send(long name, String more) {
 		logger.severe(register.send(name, more));
 	}
 	
-	public void send_debug(int name, String more){
+	public void send_debug(long name, String more){
 		logger.finer(register.send(name, more));
 	}
 	
-	public void send(int name, short type, String more) {
+	public void send(long name, short type, String more) {
 		logger.severe(register.send(name, more));
 	}
 
@@ -161,7 +161,7 @@ public class NodeLog{
 	}
 
 	
-	public void receive(int name, String more) {
+	public void receive(long name, String more) {
 		logger.info(register.receive(name, more));
 	}
 
@@ -170,16 +170,16 @@ public class NodeLog{
 		logger.info(register.receive(addr, more));
 	}
 	
-	public void receive(int name, short type, String more) {
+	public void receive(long name, short type, String more) {
 		logger.severe(register.receive(name, more));
 	}
 	
-	public void receive_debug(int name, String more) {
+	public void receive_debug(long name, String more) {
 		logger.finer(register.receive_debug(name, more));
 	}
 	
 	
-	public void saveRequest(int name, String dataType) {
+	public void saveRequest(long name, String dataType) {
 		logger.info(register.saveRequest(name, dataType));
 	}
 
@@ -189,7 +189,7 @@ public class NodeLog{
 		logger.finer(register.info(more));
 	}
 	
-	public void debug(String more, int to) {
+	public void debug(String more, long to) {
 		logger.finer(register.info(more, to));
 	}
 	
@@ -201,7 +201,7 @@ public class NodeLog{
 	}
 	
 	
-	public void developer( String more, int to){
+	public void developer( String more, long to){
 		logger.finest(register.developer(more, to));
 	}
 	

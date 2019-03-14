@@ -1,6 +1,6 @@
-package kmiddle2.communications.multicast;
+package cFramework.communications.multicast;
 
-import kmiddle2.communications.fiels.Address;
+import cFramework.communications.fiels.Address;
 
 public interface NodeMulticastable {
 	public int getName();

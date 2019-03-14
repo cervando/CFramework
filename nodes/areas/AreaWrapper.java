@@ -1,13 +1,13 @@
-package kmiddle2.nodes.areas;
+package cFramework.nodes.areas;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.p2p.AreaProtocols;
-import kmiddle2.communications.p2p.EntityProtocols;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.Node;
-import kmiddle2.nodes.NodeConf;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.p2p.AreaProtocols;
+import cFramework.communications.p2p.EntityProtocols;
+import cFramework.log.NodeLog;
+import cFramework.nodes.Node;
+import cFramework.nodes.NodeConf;
 
 public class AreaWrapper extends Node{
 
@@ -52,13 +52,13 @@ public class AreaWrapper extends Node{
 		return protocols;
 	}
 
-	public void route(int sendToID, int senderID, MessageMetadata meta, byte[] data){
+	public void route(long sendToID, long senderID, MessageMetadata meta, byte[] data){
 		area.route(sendToID, senderID,meta,data);
 	}
 	
 	
 	@Override
-	public void receive(int id, MessageMetadata m, byte[] data) {
+	public void receive(long id, MessageMetadata m, byte[] data) {
 		//area.receive(id, m, data);
 		System.out.println("How this was called?");
 	}
@@ -75,12 +75,12 @@ public class AreaWrapper extends Node{
 	}*/
 	
 	
-	public void send(int nodeID, MessageMetadata m, byte[] data){
-		protocols.sendData(nodeID, m, data);
+	public boolean send(long nodeID, MessageMetadata m, byte[] data){
+		return protocols.sendData(nodeID, m, data);
 	}
 	
-	public void send(int nodeID, int fromID, MessageMetadata m, byte[] data){
-		protocols.sendData(nodeID, fromID, m, data);
+	public boolean send(long nodeID, long fromID, MessageMetadata m, byte[] data){
+		return protocols.sendData(nodeID, fromID, m, data);
 	}
 	
 	

@@ -1,10 +1,10 @@
-package kmiddle2.communications.messages;
+package cFramework.communications.messages;
 
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.nodes.NodeConf;
+import cFramework.util.BinaryHelper;
 
 public class CreateAreaRequestMessage extends Message {
 
@@ -14,7 +14,7 @@ public class CreateAreaRequestMessage extends Message {
 		super(data);
 	}
 	
-	public CreateAreaRequestMessage(int myNodeID,String myIP, int myPort, int idToCreate, NodeConf nodeConf){
+	public CreateAreaRequestMessage(long myNodeID,String myIP, int myPort, int idToCreate, NodeConf nodeConf){
 		this.type = OperationCodeConstants.CREATE_AREA_REQUEST;
 		this.msg = 
 				BinaryHelper.mergeByteArrays(
@@ -25,23 +25,23 @@ public class CreateAreaRequestMessage extends Message {
 				);
 	}
 	
-	public int getNodeID(){
-		return BinaryHelper.byteToInt(msg, 2);
+	public long getNodeID(){
+		return BinaryHelper.byteToLong(msg, 2);
 	}
 	
 	public String getIP(){
-		return BinaryHelper.byteToIP(msg, 6);
+		return BinaryHelper.byteToIP(msg, 6 +4);
 	}
 	
 	public int getPort(){
-		return BinaryHelper.byteToUnsignedShort(msg, 10);
+		return BinaryHelper.byteToUnsignedShort(msg, 10 +4);
 	}
 	
-	public int getIDNodetoCreate(){
-		return BinaryHelper.byteToInt(msg, 12);
+	public long getIDNodetoCreate(){
+		return BinaryHelper.byteToLong(msg, 12 +4);
 	}
 	
 	public NodeConf getNodeConfiguration(){
-		return new NodeConf(BinaryHelper.byteToInt(msg, 16));
+		return new NodeConf(BinaryHelper.byteToInt(msg, 16 + 8));
 	}
 }

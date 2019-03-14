@@ -1,6 +1,6 @@
-package kmiddle2.communications.messages;
+package cFramework.communications.messages;
 
-import kmiddle2.communications.messages.base.Message;
+import cFramework.communications.messages.base.Message;
 
 public interface MessageReceiverable {
 	

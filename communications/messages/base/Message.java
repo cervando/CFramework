@@ -1,19 +1,19 @@
-package kmiddle2.communications.messages.base;
+package cFramework.communications.messages.base;
 
-import kmiddle2.communications.fiels.NullValueConstants;
-import kmiddle2.communications.messages.CreateAreaHelperRequestMessage;
-import kmiddle2.communications.messages.CreateAreaRequestMessage;
-import kmiddle2.communications.messages.DataMessage;
-import kmiddle2.communications.messages.FindNodeMessage;
-import kmiddle2.communications.messages.HandShakeMessage;
-import kmiddle2.communications.messages.HelloMessage;
-import kmiddle2.communications.messages.IgniteEntityListMessage;
-import kmiddle2.communications.messages.SearchMulticastMessage;
-import kmiddle2.communications.messages.SearchNodeRequestMessage;
-import kmiddle2.communications.messages.SingInActivityMessage;
-import kmiddle2.communications.messages.SingInAreaNotificationMessage;
-import kmiddle2.communications.messages.UpdateMessage;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.fiels.NullValueConstants;
+import cFramework.communications.messages.CreateAreaHelperRequestMessage;
+import cFramework.communications.messages.CreateAreaRequestMessage;
+import cFramework.communications.messages.DataMessage;
+import cFramework.communications.messages.FindNodeMessage;
+import cFramework.communications.messages.HandShakeMessage;
+import cFramework.communications.messages.HelloMessage;
+import cFramework.communications.messages.IgniteEntityListMessage;
+import cFramework.communications.messages.SearchMulticastMessage;
+import cFramework.communications.messages.SearchNodeRequestMessage;
+import cFramework.communications.messages.SingInActivityMessage;
+import cFramework.communications.messages.SingInAreaNotificationMessage;
+import cFramework.communications.messages.UpdateMessage;
+import cFramework.util.BinaryHelper;
 /**
  * Kuayolotl Middleware System
  * @author Karina Jaime <ajaime@gdl.cinvestav.mx>
@@ -163,7 +163,7 @@ public class Message implements NullValueConstants, OperationCodeConstants{
 //	/**
 //	 * 
 //	 * @return
-//	 */
+//	 */int
 //	public Node getNode(){
 //		return new Node(getName(), getIp(), getPort());
 //	}
@@ -251,7 +251,7 @@ public class Message implements NullValueConstants, OperationCodeConstants{
 //	public static byte[] getFreeNodeRequest( int areaName ){
 //		return getMessage(FREE_NODE, areaName);
 //	}
-//	
+//	int
 //	
 //	/**
 //	 * 
@@ -391,7 +391,7 @@ public class Message implements NullValueConstants, OperationCodeConstants{
 	public int getSecondName(){
 		return AreaName.getSecondAreaName(msg);
 	}
-
+int
 	public byte[] getSecondData(){
 		return Data.getSecondData(msg);
 	}

@@ -1,21 +1,21 @@
-package kmiddle2.communications.routeTables;
+package cFramework.communications.routeTables;
 
 import java.util.Hashtable;
 
-import kmiddle2.communications.LocalJVMNodeAddress;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.nodes.Node;
+import cFramework.communications.LocalJVMNodeAddress;
+import cFramework.communications.NodeAddress;
+import cFramework.nodes.Node;
 
 public class NodeRouteTable {
 
 	
-	protected Hashtable<Integer, NodeAddress> routeTable;
+	protected Hashtable<Long, NodeAddress> routeTable;
 	
 	public NodeRouteTable(){
-		routeTable = new Hashtable<Integer, NodeAddress>();
+		routeTable = new Hashtable<Long, NodeAddress>();
 	}
 	
-	public void set(int name,String host,int port, Node objectReference){
+	public void set(long name,String host,int port, Node objectReference){
 		routeTable.put(name, new LocalJVMNodeAddress(name, host, port, objectReference));
 	}
 	
@@ -23,12 +23,12 @@ public class NodeRouteTable {
 		routeTable.put(node.getName(), node);
 	}
 	
-	public boolean exist(int id){
-		return routeTable.containsKey(id);
+	public boolean exist(long id){
+		return routeTable.containsKey((long)id);
 	}
 	
-	public NodeAddress get(int id){
-		return routeTable.get(id);
+	public NodeAddress get(long id){
+		return routeTable.get((long)id);
 	}		
 	
 }

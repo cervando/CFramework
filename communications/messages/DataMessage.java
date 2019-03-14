@@ -1,9 +1,9 @@
-package kmiddle2.communications.messages;
+package cFramework.communications.messages;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.util.BinaryHelper;
 
 public class DataMessage extends Message {
 
@@ -15,32 +15,32 @@ public class DataMessage extends Message {
 		super(data);
 	}
 	
-	public DataMessage(int senderID, int receiverID, MessageMetadata metadata, byte[] msg){
+	public DataMessage(long senderID, long receiverID, MessageMetadata metadata, byte[] msg){
 		this.type = OperationCodeConstants.DATA;
 		this.msg = 
 				BinaryHelper.mergeByteArrays(
 						BinaryHelper.shortToByte(type),
-						BinaryHelper.intToByte(senderID),
-						BinaryHelper.intToByte(receiverID),
+						BinaryHelper.longToByte(senderID),
+						BinaryHelper.longToByte(receiverID),
 						BinaryHelper.MessageMetadataToByte(metadata),
 						msg
 				);
 	}
 	
-	public int getSenderID(){
-		return BinaryHelper.byteToInt(msg, 2);
+	public long getSenderID(){
+		return BinaryHelper.byteToLong(msg, 2);
 	}
 	
-	public int getReceiverID(){
-		return BinaryHelper.byteToInt(msg, 6);
+	public long getReceiverID(){
+		return BinaryHelper.byteToLong(msg, 6 + 4);
 	}
 	
 	public MessageMetadata getMetaData(){
-		return BinaryHelper.byteToMessageMetaData(msg, 10);
+		return BinaryHelper.byteToMessageMetaData(msg, 10 + 8);
 	}
 	
 	
 	public byte[] getData() {
-		return BinaryHelper.subByteArray(msg, 10+BinaryHelper.MessageMetadataBytesLengh, msg.length - (10+BinaryHelper.MessageMetadataBytesLengh));
+		return BinaryHelper.subByteArray(msg, 18 +BinaryHelper.MessageMetadataBytesLengh, msg.length - (18+BinaryHelper.MessageMetadataBytesLengh));
 	}
 }

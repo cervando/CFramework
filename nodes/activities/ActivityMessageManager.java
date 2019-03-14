@@ -1,7 +1,9 @@
-package kmiddle2.nodes.activities;
+package cFramework.nodes.activities;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.log.NodeLog;
+import java.lang.reflect.InvocationTargetException;
+
+import cFramework.communications.MessageMetadata;
+import cFramework.log.NodeLog;
 
 public class ActivityMessageManager {
 
@@ -16,35 +18,36 @@ public class ActivityMessageManager {
 		this.nc = nc;
 		this.pc = pc;
 		this.log = log;
+		
+		if (nc.getType() == ActivityConfiguration.TYPE_SINGLETON){
+			try {
+				p = myClass.getConstructor().newInstance();
+				p.setLog(log);
+				p.setCore(pc);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public void receive(final int nodeID, final MessageMetadata m, final byte[] data){
+	public void receive(final long nodeID, final MessageMetadata m, final byte[] data){
 		//Determinate if there is enough resources, create a helper if there is in high load 
 		//Consider if a helper has already requested
 		if (nc.getType() == ActivityConfiguration.TYPE_PARALLEL){
 			new Thread(){
 				public void run(){
 					try {
-						p = myClass.newInstance();
+						p = myClass.getConstructor().newInstance();
 						p.setLog(log);
 						p.setCore(pc);
 						p.receive(nodeID, m, data);
-					} catch (InstantiationException | IllegalAccessException e) {
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 						e.printStackTrace();
 					}
 				}
 			}.start();
 			
 		}else if (nc.getType() == ActivityConfiguration.TYPE_SINGLETON){
-			if ( p == null ){
-				try {
-					p = myClass.newInstance();
-					p.setLog(log);
-					p.setCore(pc);
-				} catch (InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
 			p.receive(nodeID, m, data);
 		}
 	}

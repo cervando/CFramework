@@ -1,9 +1,9 @@
-package kmiddle2.nodes.activities;
+package cFramework.nodes.activities;
 
 public class ActivityAndType {
 
 	private Activity activity;
-	private int id;
+	private long id;
 	private String className;
 	private ActivityConfiguration pc;
 	
@@ -33,11 +33,11 @@ public class ActivityAndType {
 		return activity;
 	}
 	
-	public void setID(int a){
+	public void setID(long a){
 		this.id = a;
 	}
 	
-	public int getID(){
+	public long getID(){
 		return id;
 	}
 }

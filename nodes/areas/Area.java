@@ -1,4 +1,4 @@
-package kmiddle2.nodes.areas;
+package cFramework.nodes.areas;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,33 +6,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.spikes.SpikeRouter;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.activities.Activity;
-import kmiddle2.nodes.activities.ActivityAndType;
-import kmiddle2.nodes.activities.ActivityConfiguration;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.spikes.SpikeRouter;
+import cFramework.log.NodeLog;
+import cFramework.nodes.activities.Activity;
+import cFramework.nodes.activities.ActivityAndType;
+import cFramework.nodes.activities.ActivityConfiguration;
 
 public abstract class Area {
 
 	private AreaWrapper core;
 	private ArrayList<ActivityAndType> process = new ArrayList<ActivityAndType>();
-	protected int ID;
+	protected long ID;
 	protected Class<?> namer = null;
 	protected NodeLog log;
+	//protected Microglia microglia = new Microglia();
 	
 	
 	
 	
 	MessageMetadata currentMetadata = null;
-	protected void send(int toID, byte[] data){
+	protected boolean send(long toID, byte[] data){
 		if ( currentMetadata != null)
-			send(toID, currentMetadata, data);
+			return send(toID, currentMetadata, data);
 		else
-			send(toID, new MessageMetadata(0), data);
+			return send(toID, new MessageMetadata(0), data);
 	}
-	protected void send(int toID,MessageMetadata m,  byte[] data){
-		core.send(toID, m, data);
+	protected boolean send(long toID,MessageMetadata m,  byte[] data){
+		//Send data Stimulates microglia
+		return core.send(toID, m, data);
+	}
+	private boolean send(long toID, long fromID, MessageMetadata m, byte[] data){
+		//Send Data Stimules Microglia
+		//micro
+		//microglia.send();
+		return core.send(toID, fromID, m, data);
 	}
 	
 	/*
@@ -43,27 +51,44 @@ public abstract class Area {
 			core.send(toID, fromID, new MessageMetadata(0), data);
 	}*/
 	
-	private void send(int toID, int fromID, MessageMetadata m, byte[] data){
-		core.send(toID, fromID, m, data);
+	
+	
+	
+	
+	public void receive(long nodeID, byte[] data) {
+		log.message("Message recived but Function receive not overwritted");
+	}
+	
+	
+	public void process(long nodeID, byte[] data){
+		//return data;
+		this.receive(nodeID, data);
 	}
 	
 	
 	
-	public void receive(int nodeID, byte[] data){}
-	public byte[] process(int nodeID, byte[] data){return data;}
 	
 	
 	
 	
+	
+	
+	
+	
+	/***
+	 * ALL Synchronization related Stuff
+	 * 
+	 * 
+	 * 
+	 */
 	//THE first level is the ROUTERID, the second is the TIME, AND THE TIRDH IS THE SENDERID
-	protected HashMap<Integer, HashMap<Integer, HashMap<Integer, byte[]>>> queueSpikes;
+	protected HashMap<Long, HashMap<Integer, HashMap<Long, byte[]>>> queueSpikes;
 	
 	//Routers for every Receiver
-	protected HashMap<Integer, List<SpikeRouter>> routes = new HashMap<Integer, List<SpikeRouter>>();
+	protected HashMap<Long, List<SpikeRouter>> routes = new HashMap<Long, List<SpikeRouter>>();
 	
 	
-	
-	public void route(int sendTo, int fromID, MessageMetadata m, byte[] data){
+	public void route(long sendTo, long fromID, MessageMetadata m, byte[] data){
 		currentMetadata = m;
 		List<SpikeRouter> routesForThisSender = routes.get(fromID);
 		
@@ -93,10 +118,10 @@ public abstract class Area {
 					//Is a fragment of a message from diferent areas
 					}else {
 						//Get the Full Message Reserved Area
-						HashMap<Integer, byte[]> spikeSet = queueSpikes.get(router.ROUTERID).get(m.time);
+						HashMap<Long, byte[]> spikeSet = queueSpikes.get(router.ROUTERID).get(m.time);
 						//If needed, Allocate the space to save the Full Message
 						if ( spikeSet == null ) {
-							spikeSet = new HashMap<Integer, byte[]>();
+							spikeSet = new HashMap<Long, byte[]>();
 							queueSpikes.get(router.ROUTERID).put(m.time, spikeSet );
 						}
 						//Save this fragment in the full message
@@ -112,11 +137,12 @@ public abstract class Area {
 							//If it is Combine all the information
 							byte[] spike = router.merger.merge(spikeSet);
 							//Send it to every RECEIVER
-							for ( int  i: router.to ) {
+							for ( long  i: router.to ) {
 								if ( i != ID)
 									send( i, ID, m, spike);
 								else
-									System.out.println("WHY WOULD YOU SEND IT TO YOURSELF, this will create an infinite Buckle");
+									//System.out.println("WHY WOULD YOU SEND IT TO YOURSELF, this will create an infinite Bucle");
+									receive(fromID,  data);
 							}
 							//Delete Full Message
 							queueSpikes.get(router.ROUTERID).remove(m.time);
@@ -126,7 +152,7 @@ public abstract class Area {
 				//It is send to me to decide what to DO
 				}else if ( sendTo == ID ){ 
 					if ( router.merger == null ) {
-						for ( int  i: router.to ) {
+						for ( long  i: router.to ) {
 							if ( i != ID)
 								send( i, ID, m, data);
 							else
@@ -143,13 +169,13 @@ public abstract class Area {
 		//THE first level is the ROUTERID, the second is the TIME, AND THE TIRDH IS THE SENDERID
 		//HashMap<Integer, HashMap<Integer, HashMap<Integer, List<byte[]>>>> queueSpikes
 		if ( queueSpikes == null ) {
-			queueSpikes = new HashMap<Integer, HashMap<Integer, HashMap<Integer, byte[]>>>();
+			queueSpikes = new HashMap<Long, HashMap<Integer, HashMap<Long, byte[]>>>();
 		}
 		
 		r.ROUTERID = queueSpikes.size();
-		queueSpikes.put(r.ROUTERID, new HashMap<Integer, HashMap<Integer, byte[]>>());
+		queueSpikes.put(r.ROUTERID, new HashMap<Integer, HashMap<Long, byte[]>>());
 		
-		for ( int i: r.from ) {
+		for ( long i: r.from ) {
 			List<SpikeRouter> routesForThisSender = routes.get(i);
 			if ( routesForThisSender == null ) {
 				routesForThisSender = new ArrayList<SpikeRouter>();
@@ -165,7 +191,7 @@ public abstract class Area {
 	
 	
 	
-	public int getID(){
+	public long getID(){
 		return ID;
 	}
 	

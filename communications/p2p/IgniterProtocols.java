@@ -1,17 +1,17 @@
-package kmiddle2.communications.p2p;
+package cFramework.communications.p2p;
 
 import java.net.BindException;
 
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.messages.HelloMessage;
-import kmiddle2.communications.messages.IgniteEntityListMessage;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.util.DefaultValues;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.messages.HelloMessage;
+import cFramework.communications.messages.IgniteEntityListMessage;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.util.DefaultValues;
 
 public class IgniterProtocols implements Protocol{
 
@@ -43,11 +43,11 @@ public class IgniterProtocols implements Protocol{
 	
 	
 	public void sendServiceUpRequest(){
-		myCommunications.send(serviceAddress, new HelloMessage().toByteArray());
+		
 	}
 	
 	public boolean isServiceUP(){
-		return isServiceUP;
+		return myCommunications.send(serviceAddress, new HelloMessage().toByteArray());
 	}
 	
 	

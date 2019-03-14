@@ -1,12 +1,12 @@
-package kmiddle2.communications.p2p.sockets;
+package cFramework.communications.p2p.sockets;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import kmiddle2.communications.BinaryArrayNotificable;
-import kmiddle2.communications.fiels.Address;
+import cFramework.communications.BinaryArrayNotificable;
+import cFramework.communications.fiels.Address;
 
 public class TCPSocketListener extends Thread{
 

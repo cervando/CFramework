@@ -1,36 +1,36 @@
-package kmiddle2.communications.p2p;
+package cFramework.communications.p2p;
 
 import java.net.BindException;
 
-import kmiddle2.communications.LocalJVMNodeAddress;
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.messages.DataMessage;
-import kmiddle2.communications.messages.FindNodeMessage;
-import kmiddle2.communications.messages.SearchNodeRequestMessage;
-import kmiddle2.communications.messages.SingInActivityMessage;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.communications.routeTables.NodeRouteTable;
-import kmiddle2.communications.routeTables.SingletonNodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.areas.AreaWrapper;
-import kmiddle2.util.IDHelper;
+import cFramework.communications.LocalJVMNodeAddress;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.messages.DataMessage;
+import cFramework.communications.messages.FindNodeMessage;
+import cFramework.communications.messages.SearchNodeRequestMessage;
+import cFramework.communications.messages.SingInActivityMessage;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.communications.routeTables.NodeRouteTable;
+import cFramework.communications.routeTables.SingletonNodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.areas.AreaWrapper;
+import cFramework.util.IDHelper;
 
 public class AreaProtocols implements Protocol{
 
 	//ActivityWrapper proccess;
-	int myNodeID;
+	long myNodeID;
 	NodeConf nc;
 	P2PCommunications myCommunications;
 	NodeRouteTable routeTable;
 	AreaWrapper areaWrapper;
 	NodeLog log;
 	
-	public AreaProtocols(int areaID,AreaWrapper wrapper, NodeConf nc, NodeLog log){
+	public AreaProtocols(long areaID,AreaWrapper wrapper, NodeConf nc, NodeLog log){
 		myNodeID = areaID;
 		areaWrapper = wrapper;
 		this.log = log;
@@ -79,22 +79,22 @@ public class AreaProtocols implements Protocol{
 	}
 	
 	//Add this to the routing table, for non-java Activity
-	public void singInActivity(int idNode, Address address){
+	public void singInActivity(long idNode, Address address){
 		
 	}
 	
 	//The node i was looking for, add to route table, then send pending messages
-	public void findNode(int idNode, Address address){
+	public void findNode(long idNode, Address address){
 		addedToRouteTable(idNode, address);
 	}
 	
 	//The node was succefully added to the route table, send pending messages
-	public void addedToRouteTable(int idNode, Address address){
+	public void addedToRouteTable(long idNode, Address address){
 		
 	}
 	
 	//Look in the route table for it, if it exist, send the results to the address Argument
-	public void searchNodeRequest(int idNode, Address address){
+	public void searchNodeRequest(long idNode, Address address){
 		NodeAddress node = routeTable.get(idNode);
 		if ( node != null){
 			myCommunications.send(
@@ -125,16 +125,16 @@ public class AreaProtocols implements Protocol{
 	}
 	*/
 	
-	public void routeData(int sendToID, int senderID, MessageMetadata meta, byte[] data){
+	public void routeData(long sendToID, long senderID, MessageMetadata meta, byte[] data){
 		areaWrapper.route(sendToID, senderID,meta,data);
 	}
 	
 	
-	public void sendData(int sendToID, MessageMetadata meta, byte[] data){
-		sendData(sendToID, 0, meta, data);
+	public boolean sendData(long sendToID, MessageMetadata meta, byte[] data){
+		return sendData(sendToID, 0, meta, data);
 	}
 	
-	public void sendData(int sendToID, int senderID, MessageMetadata meta, byte[] data){
+	public boolean sendData(long sendToID, long senderID, MessageMetadata meta, byte[] data){
 		if ( senderID == 0 )
 			senderID = myNodeID;
 		
@@ -154,11 +154,12 @@ public class AreaProtocols implements Protocol{
 			//Ask to entity to broadcast
 			log.debug("NOT FOUND, Looking for:", sendToID);
 			areaWrapper.sendtoFather(new NodeAddress(myNodeID, myCommunications.getAddress()), new SearchNodeRequestMessage(sendToID).toByteArray());
+			return false;
 		}else{
 			//What is the need for this if?
 			if ( senderID == myNodeID)
 				log.send_debug(sendToID, "");
-			myCommunications.send(node, new DataMessage(senderID, sendToID,meta, data).toByteArray());
+			return myCommunications.send(node, new DataMessage(senderID, sendToID,meta, data).toByteArray());
 		}
 	}
 

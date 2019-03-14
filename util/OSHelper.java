@@ -1,4 +1,4 @@
-	package kmiddle2.util;
+	package cFramework.util;
 
 import java.io.IOException;
 

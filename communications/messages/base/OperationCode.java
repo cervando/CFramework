@@ -1,4 +1,4 @@
-package kmiddle2.communications.messages.base;
+package cFramework.communications.messages.base;
 
 /**
  * Kuayolotl Middleware System

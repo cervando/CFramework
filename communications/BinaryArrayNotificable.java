@@ -1,6 +1,6 @@
-package kmiddle2.communications;
+package cFramework.communications;
 
-import kmiddle2.communications.fiels.Address;
+import cFramework.communications.fiels.Address;
 
 public interface BinaryArrayNotificable {
 	public void receive(Address address, byte[] message);

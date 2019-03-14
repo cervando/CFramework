@@ -18,7 +18,7 @@
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kmiddle2.communications.p2p.sockets;
+package cFramework.communications.p2p.sockets;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -28,9 +28,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import kmiddle2.communications.BinaryArrayNotificable;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.log.NodeLog;
+import cFramework.communications.BinaryArrayNotificable;
+import cFramework.communications.fiels.Address;
+import cFramework.log.NodeLog;
 
 
 public class UDPPort implements Port {
@@ -132,15 +132,17 @@ public class UDPPort implements Port {
 		datagramSocket.close();
 	}
 	
-	public void send(Address addr, byte[] data) {
+	public boolean send(Address addr, byte[] data) {
         try {
             DatagramPacket datagramPacket = new DatagramPacket(
             		data, data.length,
 					InetAddress.getByName(addr.getIp()),addr.getPort());
             datagramSocket.send(datagramPacket);
+            return true;
         }
         catch (IOException e) { 
             //temporal.error(e.getMessage());
+        	return false;
         }
     }
 	

@@ -1,16 +1,16 @@
-	package kmiddle2.nodes.entity;
+package cFramework.nodes.entity;
 
 import java.io.IOException;
 import java.net.BindException;
 
-import kmiddle2.communications.messages.MessageReceiverable;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.p2p.EntityProtocols;
-import kmiddle2.communications.routeTables.NodeRouteTable;
-import kmiddle2.communications.routeTables.SingletonNodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.util.DefaultValues;
+import cFramework.communications.messages.MessageReceiverable;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.p2p.EntityProtocols;
+import cFramework.communications.routeTables.NodeRouteTable;
+import cFramework.communications.routeTables.SingletonNodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.util.DefaultValues;
 
 public class Entity implements MessageReceiverable{
 

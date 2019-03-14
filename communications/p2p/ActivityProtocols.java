@@ -1,28 +1,28 @@
-package kmiddle2.communications.p2p;
+package cFramework.communications.p2p;
 
 import java.net.BindException;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.messages.DataMessage;
-import kmiddle2.communications.messages.FindNodeMessage;
-import kmiddle2.communications.messages.SearchNodeRequestMessage;
-import kmiddle2.communications.messages.SingInActivityMessage;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.communications.routeTables.NodeRouteTable;
-import kmiddle2.communications.routeTables.SingletonNodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.activities.ActivityWrapper;
-import kmiddle2.util.IDHelper;
+import cFramework.communications.MessageMetadata;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.messages.DataMessage;
+import cFramework.communications.messages.FindNodeMessage;
+import cFramework.communications.messages.SearchNodeRequestMessage;
+import cFramework.communications.messages.SingInActivityMessage;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.communications.routeTables.NodeRouteTable;
+import cFramework.communications.routeTables.SingletonNodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.activities.ActivityWrapper;
+import cFramework.util.IDHelper;
 
 public class ActivityProtocols implements Protocol{
 
 	ActivityWrapper proccessCore;
-	int myNodeID;
+	long myNodeID;
 	NodeAddress father;
 	NodeConf nc;
 	P2PCommunications myCommunications;
@@ -30,7 +30,7 @@ public class ActivityProtocols implements Protocol{
 	NodeRouteTable helpers;
 	NodeLog log;
 
-	public ActivityProtocols(int myNodeID, NodeAddress father, ActivityWrapper process, NodeConf nc, NodeLog log){
+	public ActivityProtocols(long myNodeID, NodeAddress father, ActivityWrapper process, NodeConf nc, NodeLog log){
 		this.myNodeID = myNodeID;
 		this.father = father;
 		this.proccessCore = process;
@@ -65,12 +65,12 @@ public class ActivityProtocols implements Protocol{
 	}
 	
 	//Add this to the routing table, as my Activity/ActivityHelper
-	public void singInActivity(int idNode, Address address){
+	public void singInActivity(long idNode, Address address){
 		helpers.set(new NodeAddress(idNode, address));
 	}
 	
 	//The node i was looking for, add to route table, then send pending messages
-	public void findNode(int idNode, Address address){
+	public void findNode(long idNode, Address address){
 		//Add to route table
 		if ( routeTable.exist(idNode)){
 		
@@ -93,14 +93,14 @@ public class ActivityProtocols implements Protocol{
 		proccessCore.receive(msg.getSenderID(), msg.getMetaData(), msg.getData());
 	}
 	
-	private void searchNodeRequest(int node){
+	private void searchNodeRequest(long node){
 		myCommunications.send(father, new SearchNodeRequestMessage(node).toByteArray());
 	}
 	
 	
-	public void sendData(int sendToID, MessageMetadata meta, byte[] data){
+	public boolean sendData(long sendToID, MessageMetadata meta, byte[] data){
 		log.send_debug(sendToID, "");
-		int senderID = myNodeID;
+		long senderID = myNodeID;
 		NodeAddress node;
 		if ( IDHelper.getAreaID(sendToID) != father.getName() ){
 			node = routeTable.get(IDHelper.getAreaID(sendToID) );
@@ -115,9 +115,9 @@ public class ActivityProtocols implements Protocol{
 			log.debug("NOT FOUND, Looking for:", sendToID);
 			searchNodeRequest(sendToID);
 			//Add to pending messages
+			return false;
 		}else
-			
-			myCommunications.send(node, new DataMessage(senderID, sendToID, meta, data).toByteArray());		
+			return myCommunications.send(node, new DataMessage(senderID, sendToID, meta, data).toByteArray());		
 	}
 	
 	@Override

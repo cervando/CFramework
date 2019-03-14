@@ -1,16 +1,16 @@
-package kmiddle2.nodes.entity;
+package cFramework.nodes.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.p2p.EntityProtocols;
-import kmiddle2.communications.routeTables.NodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.areas.Area;
-import kmiddle2.nodes.areas.AreaWrapper;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.p2p.EntityProtocols;
+import cFramework.communications.routeTables.NodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.areas.Area;
+import cFramework.nodes.areas.AreaWrapper;
 
 public class AreasManager {
 

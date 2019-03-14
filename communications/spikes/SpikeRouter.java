@@ -1,19 +1,19 @@
-package kmiddle2.communications.spikes;
+package cFramework.communications.spikes;
 
 import java.util.Arrays;
 
 public class SpikeRouter {
 	
 	
-	private int [] to_sorted;
-	public int ROUTERID = 0;
+	private long[] to_sorted;
+	public long ROUTERID = 0;
 	
-	public int[] from;
-	public int[] to;
+	public long[] from;
+	public long[] to;
 	public SpikeMerger merger = null;	
 	
 	
-	public SpikeRouter(int[] from, int[] to) {
+	public SpikeRouter(long[] from, long[] to) {
 		this.from = from;
 		this.to = to;
 		this.to_sorted = to.clone();
@@ -21,7 +21,7 @@ public class SpikeRouter {
 	}
 	
 	
-	public SpikeRouter(int[] from, int[] to, SpikeMerger merger) {
+	public SpikeRouter(long[] from, long[] to, SpikeMerger merger) {
 		this.from = from;
 		this.to = to;
 		this.to_sorted = to.clone();
@@ -29,7 +29,7 @@ public class SpikeRouter {
 		this.merger = merger;
 	}
 	
-	public boolean isTargetToID( int sendToID) {
+	public boolean isTargetToID( long sendToID) {
 		return Arrays.binarySearch(to_sorted, sendToID) >= 0;
 	}
 	/*

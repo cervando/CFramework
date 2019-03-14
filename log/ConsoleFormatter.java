@@ -1,4 +1,4 @@
-package kmiddle2.log;
+package cFramework.log;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;

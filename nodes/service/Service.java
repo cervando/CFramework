@@ -1,10 +1,10 @@
-package kmiddle2.nodes.service;
+package cFramework.nodes.service;
 
-import kmiddle2.communications.p2p.ServiceProtocol;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.entity.Entity;
-import kmiddle2.util.OSHelper;
+import cFramework.communications.p2p.ServiceProtocol;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.entity.Entity;
+import cFramework.util.OSHelper;
 
 public class Service {
 

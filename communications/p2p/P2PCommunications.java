@@ -1,4 +1,4 @@
-package kmiddle2.communications.p2p;
+package cFramework.communications.p2p;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -6,17 +6,17 @@ import java.net.BindException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import kmiddle2.communications.AddressAndBytes;
-import kmiddle2.communications.BinaryArrayNotificable;
-import kmiddle2.communications.LocalJVMNodeAddress;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.p2p.sockets.Port;
-import kmiddle2.communications.p2p.sockets.TCPPort;
-import kmiddle2.communications.p2p.sockets.UDPPort;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
+import cFramework.communications.AddressAndBytes;
+import cFramework.communications.BinaryArrayNotificable;
+import cFramework.communications.LocalJVMNodeAddress;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.p2p.sockets.Port;
+import cFramework.communications.p2p.sockets.TCPPort;
+import cFramework.communications.p2p.sockets.UDPPort;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
 
 public class P2PCommunications implements BinaryArrayNotificable {
 
@@ -82,11 +82,12 @@ public class P2PCommunications implements BinaryArrayNotificable {
 	 * @param address
 	 * @param message
 	 */
-	public void send(NodeAddress address, byte[] message){
+	public boolean send(NodeAddress address, byte[] message){
 		if ( address instanceof LocalJVMNodeAddress ) {
 			((LocalJVMNodeAddress) address).getNodeReference().receive(myAddress, message);
+			return true;
 		}else{
-			socketPort.send(address.getAddress(), message);
+			return socketPort.send(address.getAddress(), message);
 		}
 	}
 	

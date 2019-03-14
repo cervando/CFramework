@@ -1,15 +1,15 @@
-package kmiddle2.nodes.service;
+package cFramework.nodes.service;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import kmiddle2.communications.p2p.IgniterProtocols;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.entity.Entity;
-import kmiddle2.util.OSHelper;
+import cFramework.communications.p2p.IgniterProtocols;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.entity.Entity;
+import cFramework.util.OSHelper;
 
 /**
  * 
@@ -103,16 +103,15 @@ public class Igniter {
 		}else {
 			//Init P2P communication
 			protocols = new IgniterProtocols(log);
+
+
 			
-			//Check if there is a Service running on this machine
-			protocols.sendServiceUpRequest();
+
 			try {
-				Thread.sleep(500);
-				//If service is down, ignites a service and wait for it to instanciate
 				if ( !protocols.isServiceUP() ){
 					log.developer("Service is down");
 					initService();
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				}
 				log.developer("Sending Areas List to service");
 				protocols.sendList(areasArray, configuration);
@@ -123,6 +122,16 @@ public class Igniter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+			
+			
+			//Check if there is a Service running on this machine
+			/*protocols.sendServiceUpRequest();
+			try {
+				Thread.sleep(500);
+				//If service is down, ignites a service and wait for it to instanciate
+				
+			
+			*/
 		}
 	}
 }

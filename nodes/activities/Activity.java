@@ -1,18 +1,23 @@
-package kmiddle2.nodes.activities;
+package cFramework.nodes.activities;
 
-import kmiddle2.communications.MessageMetadata;
-import kmiddle2.log.NodeLog;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import cFramework.communications.MessageMetadata;
+import cFramework.log.NodeLog;
 
 public abstract class Activity{
 
 	private ActivityWrapper core;
-	protected int ID;
+	protected long ID;
 	protected Class<?> namer;
 	protected NodeLog log;
+	private float wellnessUmbral = 1f;
+	
 	
 	public void init(){}
 	
-	public int getID(){
+	public long getID(){
 		return ID;
 	}
 	
@@ -20,20 +25,50 @@ public abstract class Activity{
 		this.core = core;
 	}
 	
-	protected void send(int nodeID, byte[] data){
+	protected boolean send(long nodeID, byte[] data){
 		if ( currentMetadata != null )
-			core.send(nodeID, currentMetadata, data);
+			return core.send(nodeID, currentMetadata, data);
 		else
-			core.send(nodeID, new MessageMetadata(0), data);
+			return core.send(nodeID, new MessageMetadata(0), data);
 	}
 	
-	public abstract void receive(int nodeID,  byte[] data);
+	public abstract void receive(long nodeID,  byte[] data);
+	
+	
 	
 	protected MessageMetadata currentMetadata = null;
-	public void receive(int nodeID, MessageMetadata m, byte[] data) {
+	public void receive(long nodeID, MessageMetadata m, byte[] data) {
+		currentMetadata = m;
+		//receive(nodeID,data);
+		if ( getWellness() >= wellnessUmbral )
+			receive(nodeID, data);
+		else {
+			
+			try {
+				Method recovery = this.getClass().getMethod("recovery_receive", int.class, byte[].class);
+				recovery.invoke(this, nodeID, data);
+				
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				receive(nodeID, data);
+			}
+			
+		}
+		
+		
+		
+		
+	}
+	
+	
+	public void recovery_receive(long nodeID, MessageMetadata m, byte[] data) {
 		currentMetadata = m;
 		receive(nodeID,data);
 	}
+	
+	
+	
+	
 	
 	public Class<?> getNamer(){
 		return namer;
@@ -41,5 +76,17 @@ public abstract class Activity{
 	
 	public void setLog(NodeLog log){
 		this.log = log;
+	}
+	
+	public float getWellness() {
+		return core.getWellness();
+	}
+	
+	public void setWellness(float w) {
+		core.setWellness(w);
+	}
+	
+	public void setWellnessUmbral(float w) {
+		this.wellnessUmbral = w;
 	}
 }

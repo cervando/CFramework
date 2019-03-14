@@ -1,59 +1,72 @@
-package kmiddle2.util;
+package cFramework.util;
 
 import java.lang.reflect.Field;
 
 public class IDHelper {
 
-	private static int AreaLeftShift = 20;
-	private static int ActivityLeftShift = 15;
+	private static int AreaLeftShift = 32;
 	
-	private static int AREAMASK = 0b111111111111 << AreaLeftShift;
-	private static int ACTIVITYMASK = 0b11111 << ActivityLeftShift;
+	//private static int AREAMASK = 0b111111111111 << AreaLeftShift;
+	//private static int ACTIVITYMASK = 0b11111 << ActivityLeftShift;
 	
 	
-	public static boolean isActivitiy(int ID){
-		if((ID & IDHelper.ACTIVITYMASK) != 0)
+	public static boolean isActivitiy(long ID){
+		if((ID << AreaLeftShift) != 0)
 			return true;
 		return false;
 	}
 	
-	public static boolean isArea(int ID){
-		if((ID & IDHelper.AREAMASK) == ID)
+	
+	public static boolean isArea(long ID){
+		if((ID << AreaLeftShift) == 0 )
 			return true;
 		return false;
 	}
 	
-	public static int getAreaID(int ID){
-		return ID & IDHelper.AREAMASK;
+	public static long getAreaID(long ID){
+		return (long)((ID >> AreaLeftShift) << AreaLeftShift);
 	}
 	
-	public static final int generateID(int AreaID, int ActivityID, int index){
-		return  ((AreaID << IDHelper.AreaLeftShift) & AREAMASK) + 
-				((ActivityID << IDHelper.ActivityLeftShift) & ACTIVITYMASK) + 
+	public static final long generateID(int AreaID, int ActivityID, int index){
+		return  (((long)AreaID) << IDHelper.AreaLeftShift) + 
+				(ActivityID);
+	}
+	
+	public static final long generateID(String AreaName, int ActivityID, int index){
+		return  (((long)AreaName.hashCode()) << AreaLeftShift )  +
+				(ActivityID ) +
 				index;
 	}
 	
-	public static final int generateID(String AreaName, int ActivityID, int index){
-		return  ((AreaName.hashCode() << AreaLeftShift ) & AREAMASK) +
-				((ActivityID << IDHelper.ActivityLeftShift) & ACTIVITYMASK) +
-				index;
+	
+	public static final long generateID(String areaName, String activityName){
+		return  ((areaName.hashCode() << AreaLeftShift )) +
+				activityName.hashCode();
 	}
 	
-	public static String getNameAsString( Class<?> namer, int name ) {
+	
+	
+	public static String getNameAsString( Class<?> namer, long name ) {
 		if ( namer == null )
 				return String.valueOf(name);
-		String areaName = getAreaName(namer, name);
-		String typeName = getTypeName(namer, name);
-		//String index = String.valueOf(name & SMALLNODEMASK);
-		//if( typeName.equals("") && index.equals("0"))
-		if( typeName.equals("") )
-			return areaName;
-		return areaName + "_" + typeName;// + "_" + index;
+		
+		Field[] fields = namer.getFields();
+		for ( int i = 0; i < fields.length; i++){
+			try{
+				if ( name == fields[i].getLong(null) )
+					return fields[i].getName();
+			}catch(Exception e){
+				System.out.println(e);
+			}
+		}
+		return "";
+		
+		
 	}
 	
 	
-	public static String getAreaName( Class<?> namer, int name ) {
-		int area = IDHelper.getAreaID(name);
+	/*public static String getAreaName( Class<?> namer, long name ) {
+		long area = IDHelper.getAreaID(name);
 		if ( namer == null )
 			return String.valueOf(area);
 		
@@ -69,9 +82,11 @@ public class IDHelper {
 		return "";
 	}
 	
-	public static String getTypeName( Class<?> namer, int name ){
+	
+	
+	public static String getTypeName( Class<?> namer, long name ){
 		if ( namer == null )
-			return String.valueOf((name & IDHelper.ACTIVITYMASK) >> IDHelper.ActivityLeftShift);
+			return String.valueOf((name ) >> AreaLeftShift);
 		
 		Field[] fields = namer.getFields();
 		for ( int i = 0; i < fields.length; i++){
@@ -88,7 +103,7 @@ public class IDHelper {
 			}
 		}
 		return "";
-	}
+	}*/
 	
 	
 	

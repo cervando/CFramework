@@ -1,8 +1,8 @@
-package kmiddle2.communications.messages;
+package cFramework.communications.messages;
 
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.util.BinaryHelper;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.util.BinaryHelper;
 
 public class SearchNodeRequestMessage extends Message {
 
@@ -14,16 +14,16 @@ public class SearchNodeRequestMessage extends Message {
 		super(data);
 	}
 	
-	public SearchNodeRequestMessage(int nodeID){
+	public SearchNodeRequestMessage(long nodeID){
 		this.type = OperationCodeConstants.SEARCH_NODE_REQUEST;
 		this.msg = 
 				BinaryHelper.mergeByteArrays(
 						BinaryHelper.shortToByte(type), 
-						BinaryHelper.intToByte(nodeID)
+						BinaryHelper.longToByte(nodeID)
 				);
 	}
 		
-	public int getNodeID(){
-		return BinaryHelper.byteToInt(msg, 2);
+	public long getNodeID(){
+		return BinaryHelper.byteToLong(msg, 2);
 	}
 }

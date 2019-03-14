@@ -18,7 +18,7 @@
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package kmiddle2.nodes;
+package cFramework.nodes;
 
 public class NodeConf {
 	

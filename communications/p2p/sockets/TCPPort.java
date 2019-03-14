@@ -27,7 +27,7 @@
 */
 
 
-package kmiddle2.communications.p2p.sockets;
+package cFramework.communications.p2p.sockets;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,9 +36,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import kmiddle2.communications.BinaryArrayNotificable;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.log.NodeLog;
+import cFramework.communications.BinaryArrayNotificable;
+import cFramework.communications.fiels.Address;
+import cFramework.log.NodeLog;
 
 public class TCPPort implements Port {
 	
@@ -130,7 +130,7 @@ public class TCPPort implements Port {
 	}
 	
 	@Override
-	public void send(Address address, byte[] message) {
-		new TCPSocketSender(address, message,myAddress.getPort(), log).run();
+	public boolean send(Address address, byte[] message) {
+		return new TCPSocketSender(address, message,myAddress.getPort(), log).send();
 	}
 }

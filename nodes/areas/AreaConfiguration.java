@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
-package kmiddle2.nodes.areas;
+package cFramework.nodes.areas;
 
-import kmiddle2.nodes.NodeConf;
+import cFramework.nodes.NodeConf;
 
 public class AreaConfiguration extends NodeConf {
 	

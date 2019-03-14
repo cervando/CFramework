@@ -17,31 +17,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
-package kmiddle2.log;
+package cFramework.log;
 
-import kmiddle2.communications.fiels.Address;
+import cFramework.communications.fiels.Address;
 
 public interface LogRegisterAble {
 	
-	public String header(int name, Address address);
+	public String header(long name, Address address);
 	
-	public String send(int name,String more);
+	public String send(long name,String more);
 	public String send(Address addr, String more);
-	public String send_debug(int name, String more);
+	public String send_debug(long name, String more);
 	
 	
-	public String receive(int name,String more);
+	public String receive(long name,String more);
 	public String receive(Address addr, String more);
-	public String receive_debug(int name, String more);
+	public String receive_debug(long name, String more);
 	
 	
-	public String saveRequest(int name,String more);
+	public String saveRequest(long name,String more);
 	
 	public String error(String more);
 	
 	public String info(String more);
-	public String info(String more, int node);
+	public String info(String more, long node);
 	
 	public String developer(String more);
-	public String developer(String more, int node);
+	public String developer(String more, long node);
 }

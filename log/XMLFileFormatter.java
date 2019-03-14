@@ -1,4 +1,4 @@
-package kmiddle2.log;
+package cFramework.log;
 
 /**
  * Kuayolotl Middleware System

@@ -19,18 +19,18 @@
  */
 
 
-package kmiddle2.communications.multicast;
+package cFramework.communications.multicast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.util.DefaultValues;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.util.DefaultValues;
 
 public class Multicast extends Thread{
 	

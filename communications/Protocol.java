@@ -1,6 +1,6 @@
-package kmiddle2.communications;
+package cFramework.communications;
 
-import kmiddle2.communications.p2p.P2PCommunications;
+import cFramework.communications.p2p.P2PCommunications;
 
 public interface Protocol extends BinaryArrayNotificable{
 

@@ -1,20 +1,20 @@
-package kmiddle2.nodes.areas;
+package cFramework.nodes.areas;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import kmiddle2.communications.LocalJVMNodeAddress;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.routeTables.SingletonNodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
-import kmiddle2.nodes.activities.ActivityConfiguration;
-import kmiddle2.nodes.activities.Activity;
-import kmiddle2.nodes.activities.ActivityAndType;
-import kmiddle2.nodes.activities.ActivityWrapper;
-import kmiddle2.util.OSHelper;
+import cFramework.communications.LocalJVMNodeAddress;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.routeTables.SingletonNodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
+import cFramework.nodes.activities.Activity;
+import cFramework.nodes.activities.ActivityAndType;
+import cFramework.nodes.activities.ActivityConfiguration;
+import cFramework.nodes.activities.ActivityWrapper;
+import cFramework.util.OSHelper;
 
 public class ActivityInitializer {
 

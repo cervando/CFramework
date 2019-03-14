@@ -1,25 +1,23 @@
-package kmiddle2.communications.p2p;
+package cFramework.communications.p2p;
 
 import java.net.BindException;
 
-import javax.xml.stream.events.NotationDeclaration;
-
-import kmiddle2.communications.BinaryArrayNotificable;
-import kmiddle2.communications.NodeAddress;
-import kmiddle2.communications.Protocol;
-import kmiddle2.communications.fiels.Address;
-import kmiddle2.communications.messages.FindNodeMessage;
-import kmiddle2.communications.messages.HandShakeMessage;
-import kmiddle2.communications.messages.MessageReceiverable;
-import kmiddle2.communications.messages.SearchMulticastMessage;
-import kmiddle2.communications.messages.SearchNodeRequestMessage;
-import kmiddle2.communications.messages.SingInAreaNotificationMessage;
-import kmiddle2.communications.messages.base.Message;
-import kmiddle2.communications.messages.base.OperationCodeConstants;
-import kmiddle2.communications.multicast.Multicast;
-import kmiddle2.communications.routeTables.NodeRouteTable;
-import kmiddle2.log.NodeLog;
-import kmiddle2.nodes.NodeConf;
+import cFramework.communications.BinaryArrayNotificable;
+import cFramework.communications.NodeAddress;
+import cFramework.communications.Protocol;
+import cFramework.communications.fiels.Address;
+import cFramework.communications.messages.FindNodeMessage;
+import cFramework.communications.messages.HandShakeMessage;
+import cFramework.communications.messages.MessageReceiverable;
+import cFramework.communications.messages.SearchMulticastMessage;
+import cFramework.communications.messages.SearchNodeRequestMessage;
+import cFramework.communications.messages.SingInAreaNotificationMessage;
+import cFramework.communications.messages.base.Message;
+import cFramework.communications.messages.base.OperationCodeConstants;
+import cFramework.communications.multicast.Multicast;
+import cFramework.communications.routeTables.NodeRouteTable;
+import cFramework.log.NodeLog;
+import cFramework.nodes.NodeConf;
 
 public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 
@@ -73,7 +71,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	 * @param idNode
 	 * @param address
 	 */
-	private void findNode(int idNode, Address address){		
+	private void findNode(long idNode, Address address){		
 		addedToRouteTable(idNode, address);
 		
 	}
@@ -83,7 +81,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	 * @param idNode
 	 * @param address
 	 */
-	private void addedToRouteTable(int idNode, Address address){
+	private void addedToRouteTable(long idNode, Address address){
 		routeTable.set(new NodeAddress(idNode, address));
 		
 	}
@@ -93,7 +91,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	 * @param idNode
 	 * @param address
 	 */
-	private void searchNodeRequest(int idNode, Address address){
+	private void searchNodeRequest(long idNode, Address address){
 		multicastConection.send(
 				new SearchMulticastMessage(
 						0,  
@@ -117,7 +115,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	}
 	
 	
-	private void SingInAreaNotification(int myID, Address address){
+	private void SingInAreaNotification(long myID, Address address){
 		multicastConection.send(
 				new SingInAreaNotificationMessage(
 						myID,  
@@ -127,7 +125,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 		);
 	}
 	
-	private void SearchNodeMulticast(Address address, int lookedNodeID){
+	private void SearchNodeMulticast(Address address, long lookedNodeID){
 		NodeAddress node = routeTable.get(lookedNodeID);
 		if ( node != null ){
 			myCommunications.send(
