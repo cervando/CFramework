@@ -36,6 +36,19 @@ public abstract class Area {
 		//Send data Stimulates microglia
 		return core.send(toID, m, data);
 	}
+	/*
+	public boolean send(long toID, long fromID, byte[] data){
+		//Send Data Stimules Microglia
+		//micro
+		//microglia.send();
+		if ( currentMetadata != null)
+			return send(toID, fromID, currentMetadata, data);
+		else
+			return send(toID, fromID, new MessageMetadata(0), data);
+	}*/
+	
+	
+	
 	private boolean send(long toID, long fromID, MessageMetadata m, byte[] data){
 		//Send Data Stimules Microglia
 		//micro
