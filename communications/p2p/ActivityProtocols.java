@@ -16,12 +16,12 @@ import cFramework.communications.routeTables.NodeRouteTable;
 import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.activities.ActivityWrapper;
+import cFramework.nodes.processes.ProcessWrapper;
 import cFramework.util.IDHelper;
 
 public class ActivityProtocols implements Protocol{
 
-	ActivityWrapper proccessCore;
+	ProcessWrapper proccessCore;
 	long myNodeID;
 	NodeAddress father;
 	NodeConf nc;
@@ -30,7 +30,7 @@ public class ActivityProtocols implements Protocol{
 	NodeRouteTable helpers;
 	NodeLog log;
 
-	public ActivityProtocols(long myNodeID, NodeAddress father, ActivityWrapper process, NodeConf nc, NodeLog log){
+	public ActivityProtocols(long myNodeID, NodeAddress father, ProcessWrapper process, NodeConf nc, NodeLog log){
 		this.myNodeID = myNodeID;
 		this.father = father;
 		this.proccessCore = process;

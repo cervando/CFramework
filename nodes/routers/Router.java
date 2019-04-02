@@ -1,4 +1,4 @@
-package cFramework.nodes.areas;
+package cFramework.nodes.routers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,14 +9,14 @@ import java.util.List;
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.spikes.SpikeRouter;
 import cFramework.log.NodeLog;
-import cFramework.nodes.activities.Activity;
-import cFramework.nodes.activities.ActivityAndType;
-import cFramework.nodes.activities.ActivityConfiguration;
+import cFramework.nodes.processes.Process;
+import cFramework.nodes.processes.ProcessAndType;
+import cFramework.nodes.processes.ProcessConfiguration;
 
-public abstract class Area {
+public abstract class Router {
 
-	private AreaWrapper core;
-	private ArrayList<ActivityAndType> process = new ArrayList<ActivityAndType>();
+	private RouterWrapper core;
+	private ArrayList<ProcessAndType> process = new ArrayList<ProcessAndType>();
 	protected long ID;
 	protected Class<?> namer = null;
 	protected NodeLog log;
@@ -208,7 +208,7 @@ public abstract class Area {
 		return ID;
 	}
 	
-	public void setCore(AreaWrapper core){
+	public void setCore(RouterWrapper core){
 		this.core = core;
 	}
 	
@@ -216,19 +216,19 @@ public abstract class Area {
 		this.log = log;
 	}
 	
-	public ArrayList<ActivityAndType> getActivities(){
+	public ArrayList<ProcessAndType> getActivities(){
 		return process;
 	}
 	
-	protected void addProcess(Class<? extends Activity> className){ 
+	protected void addProcess(Class<? extends Process> className){ 
 		addProcess(className, 0);
 	}
 	
-	protected void addProcess(Class<? extends Activity> className, int configurationValue){
-		addProcess(className, new ActivityConfiguration(configurationValue));
+	protected void addProcess(Class<? extends Process> className, int configurationValue){
+		addProcess(className, new ProcessConfiguration(configurationValue));
 	}
 	
-	protected void addProcess(Class<? extends Activity> className, ActivityConfiguration nc){
+	protected void addProcess(Class<? extends Process> className, ProcessConfiguration nc){
 		addProcess(className.getName(),nc);
 	}
 	
@@ -238,11 +238,11 @@ public abstract class Area {
 	}
 	
 	protected void addProcess(String className, int configurationValue){
-		addProcess(className, new ActivityConfiguration(configurationValue));
+		addProcess(className, new ProcessConfiguration(configurationValue));
 	}
 	
-	protected void addProcess(String className, ActivityConfiguration nc){
-		this.process.add( new ActivityAndType(className,nc) );
+	protected void addProcess(String className, ProcessConfiguration nc){
+		this.process.add( new ProcessAndType(className,nc) );
 	}
 	
 	public Class<?> getNamer(){
@@ -261,7 +261,7 @@ public abstract class Area {
 		Method m;
 		try {
 			m = this.getClass().getMethod("init", parameterClasses);
-			if ( !m.toString().contains(Area.class.getName()) )
+			if ( !m.toString().contains(Router.class.getName()) )
 				m.invoke(this,parameterValues);
 		} catch (NoSuchMethodException | SecurityException e) {
 			System.out.println("Error getting init method");

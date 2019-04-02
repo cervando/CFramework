@@ -1,4 +1,4 @@
-package cFramework.nodes.activities;
+package cFramework.nodes.processes;
 
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.NodeAddress;
@@ -8,21 +8,21 @@ import cFramework.log.NodeLog;
 import cFramework.nodes.Node;
 import cFramework.nodes.microglia.Microglia;
 
-public class ActivityWrapper extends Node {
+public class ProcessWrapper extends Node {
 
 	ActivityProtocols protocols;
-	ActivityMessageManager manager;
-	Class<? extends Activity> activity;
+	ProcessMessageManager manager;
+	Class<? extends Process> activity;
 	NodeLog log;
 	Microglia microglia = new Microglia();
 	
-	public ActivityWrapper(Activity p, NodeAddress father, ActivityConfiguration nc){
+	public ProcessWrapper(Process p, NodeAddress father, ProcessConfiguration nc){
 		activity = p.getClass();
 		log = new NodeLog(p.getID(), p.getNamer(), nc.isDebug());
 		p.setLog(log);
 		
 		protocols = new ActivityProtocols(p.getID(), father, this, nc, log);
-		manager = new ActivityMessageManager(activity, this, nc,log);
+		manager = new ProcessMessageManager(activity, this, nc,log);
 	}
 	
 	public boolean send(long nodeID, MessageMetadata m, byte[] data){

@@ -1,4 +1,4 @@
-package cFramework.nodes.activities;
+package cFramework.nodes.processes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,9 +6,9 @@ import java.lang.reflect.Method;
 import cFramework.communications.MessageMetadata;
 import cFramework.log.NodeLog;
 
-public abstract class Activity{
+public abstract class Process{
 
-	private ActivityWrapper core;
+	private ProcessWrapper core;
 	protected long ID;
 	protected Class<?> namer;
 	protected NodeLog log;
@@ -21,7 +21,7 @@ public abstract class Activity{
 		return ID;
 	}
 	
-	public void setCore(ActivityWrapper core){
+	public void setCore(ProcessWrapper core){
 		this.core = core;
 	}
 	

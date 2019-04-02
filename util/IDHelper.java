@@ -38,6 +38,10 @@ public class IDHelper {
 				index;
 	}
 	
+	public static final long generateID(String AreaName ){
+		return  (((long)AreaName.hashCode()) << AreaLeftShift );
+	}
+	
 	
 	public static final long generateID(String areaName, String activityName){
 		return  ((areaName.hashCode() << AreaLeftShift )) +

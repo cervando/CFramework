@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cFramework.nodes.activities;
+package cFramework.nodes.processes;
 
 import cFramework.nodes.NodeConf;
 
-public class ActivityConfiguration extends NodeConf {
+public class ProcessConfiguration extends NodeConf {
 
 	private final int MASK_TYPE				= 	0b00000000000000000000000011100000;
 	public static final int TYPE_SINGLETON 	=	0b00000000000000000000000001000000;
@@ -32,15 +32,15 @@ public class ActivityConfiguration extends NodeConf {
 	public static final int LENG_PYTHON 	=	0b00000000000000000000000100000000;
 	
 	
-	public ActivityConfiguration(){
+	public ProcessConfiguration(){
 		this(0);
 	}
 	
-	public ActivityConfiguration(int val){
+	public ProcessConfiguration(int val){
 		this(val, (byte)0 );
 	}
 	
-	public ActivityConfiguration(int val, byte entityID){
+	public ProcessConfiguration(int val, byte entityID){
 		super(val, entityID);
 	}
 	

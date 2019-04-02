@@ -1,4 +1,4 @@
-package cFramework.nodes.areas;
+package cFramework.nodes.routers;
 
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.NodeAddress;
@@ -9,17 +9,17 @@ import cFramework.log.NodeLog;
 import cFramework.nodes.Node;
 import cFramework.nodes.NodeConf;
 
-public class AreaWrapper extends Node{
+public class RouterWrapper extends Node{
 
 	NodeAddress father;
 	EntityProtocols fatherProtocols;
 	AreaProtocols protocols;
-	private Area area;
-	private ActivityInitializer activities;
+	private Router area;
+	private ProcessInitializer activities;
 	protected NodeConf nc;
 	private NodeLog log;
 	
-	public AreaWrapper(Area area, EntityProtocols entityCommunication, NodeConf nc){
+	public RouterWrapper(Router area, EntityProtocols entityCommunication, NodeConf nc){
 		this.fatherProtocols = entityCommunication;
 		this.nc = nc;
 		this.area = area;	
@@ -29,7 +29,7 @@ public class AreaWrapper extends Node{
 	}
 	
 	public void setUp(){
-		activities = new ActivityInitializer(area.getActivities(), log);
+		activities = new ProcessInitializer(area.getActivities(), log);
 		protocols = new AreaProtocols(area.getID(), this, nc, log);	
 	}
 	

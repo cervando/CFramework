@@ -1,13 +1,13 @@
-package cFramework.nodes.activities;
+package cFramework.nodes.processes;
 
-public class ActivityAndType {
+public class ProcessAndType {
 
-	private Activity activity;
+	private Process activity;
 	private long id;
 	private String className;
-	private ActivityConfiguration pc;
+	private ProcessConfiguration pc;
 	
-	public ActivityAndType(String className, ActivityConfiguration pc){
+	public ProcessAndType(String className, ProcessConfiguration pc){
 		this.className = className;
 		this.pc = pc;
 	}
@@ -20,16 +20,16 @@ public class ActivityAndType {
 		return className;
 	}
 	
-	public ActivityConfiguration getActivityConfiguration(){
+	public ProcessConfiguration getActivityConfiguration(){
 		return pc;
 	}
 	
-	public void setActivity(Activity a){
+	public void setActivity(Process a){
 		this.activity = a;
 		id = a.getID();
 	}
 	
-	public Activity getActivity(){
+	public Process getActivity(){
 		return activity;
 	}
 	

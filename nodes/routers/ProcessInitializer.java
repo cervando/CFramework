@@ -1,4 +1,4 @@
-package cFramework.nodes.areas;
+package cFramework.nodes.routers;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -10,28 +10,28 @@ import cFramework.communications.NodeAddress;
 import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.activities.Activity;
-import cFramework.nodes.activities.ActivityAndType;
-import cFramework.nodes.activities.ActivityConfiguration;
-import cFramework.nodes.activities.ActivityWrapper;
+import cFramework.nodes.processes.Process;
+import cFramework.nodes.processes.ProcessAndType;
+import cFramework.nodes.processes.ProcessConfiguration;
+import cFramework.nodes.processes.ProcessWrapper;
 import cFramework.util.OSHelper;
 
-public class ActivityInitializer {
+public class ProcessInitializer {
 
-	private ArrayList<ActivityAndType> process = new ArrayList<ActivityAndType>();
+	private ArrayList<ProcessAndType> process = new ArrayList<ProcessAndType>();
 	private NodeLog log = null;
 	
-	public ActivityInitializer(ArrayList<ActivityAndType> activities, NodeLog log){
+	public ProcessInitializer(ArrayList<ProcessAndType> activities, NodeLog log){
 		this.process = activities;
 		this.log = log;
 	}
 	
 	public void setUp(NodeAddress fatherAddress, NodeConf nc){
-		for(ActivityAndType a:process){
-			if ( a.getLenguage() == ActivityConfiguration.LENG_JAVA ){
+		for(ProcessAndType a:process){
+			if ( a.getLenguage() == ProcessConfiguration.LENG_JAVA ){
 				createJavaActivity(a, fatherAddress, nc);
 				
-			}else if ( a.getLenguage() == ActivityConfiguration.LENG_PYTHON ){
+			}else if ( a.getLenguage() == ProcessConfiguration.LENG_PYTHON ){
 				createPythonActivity(a, fatherAddress, nc);
 				
 			}
@@ -39,19 +39,19 @@ public class ActivityInitializer {
 	}
 	
 	
-	public void createJavaActivity(ActivityAndType a, NodeAddress fatherAddress, NodeConf nc){
+	public void createJavaActivity(ProcessAndType a, NodeAddress fatherAddress, NodeConf nc){
 		log.developer("Adding class " + a.getClassName());
-		Activity activity = getActivityObject(a.getClassName());
+		Process activity = getActivityObject(a.getClassName());
 		if (activity == null ){
 			log.developer("Activity " + a.getClassName() + "Does not exist");
 			return;
 		}
 		
-		ActivityConfiguration pc;
+		ProcessConfiguration pc;
 		pc = a.getActivityConfiguration();
 		pc.combine(nc.toInt());
 		
-		ActivityWrapper core = new ActivityWrapper(activity, fatherAddress, pc);						//Add the area to a wrapper
+		ProcessWrapper core = new ProcessWrapper(activity, fatherAddress, pc);						//Add the area to a wrapper
 		activity.setCore(core);
 		LocalJVMNodeAddress activityNode = new LocalJVMNodeAddress(core.getProtocol().getNodeAddress(), core);
 		
@@ -60,19 +60,19 @@ public class ActivityInitializer {
 	}
 	
 	
-	private Activity getActivityObject(String areaClassName){
+	private Process getActivityObject(String areaClassName){
 		try {
 			//Get the area intance from the string
 			Class<?> nodeClass = Class.forName(areaClassName);										//Conseguir clase
 			Constructor<?> nodeConstr = nodeClass.getConstructor();	
-			return (Activity)nodeConstr.newInstance();
+			return (Process)nodeConstr.newInstance();
 		} catch (IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 			log.error(e.toString());	
 		}
 		return null;
 	}
 	
-	public void createPythonActivity(ActivityAndType a, NodeAddress fatherAddress, NodeConf nc){
+	public void createPythonActivity(ProcessAndType a, NodeAddress fatherAddress, NodeConf nc){
 			
 			String pythonLib = getPythonLibrary();
 			if ( pythonLib == null){
@@ -81,8 +81,8 @@ public class ActivityInitializer {
 			}
 				
 			
-			ActivityConfiguration pc;
-			pc = new ActivityConfiguration(nc.toInt() | a.getActivityConfiguration().toInt());
+			ProcessConfiguration pc;
+			pc = new ProcessConfiguration(nc.toInt() | a.getActivityConfiguration().toInt());
 			
 			String command = "python ";
 			command += OSHelper.preparePath(pythonLib + OSHelper.preparePathSegment("/node/activityWrapper.py")) + " ";
@@ -112,15 +112,15 @@ public class ActivityInitializer {
 	
 	public void initAll(){
 		//NodeRouteTable routeTable = SingletonNodeRouteTable.getInstance();
-		for(final ActivityAndType a:process){
-			if ( a.getLenguage() == ActivityConfiguration.LENG_JAVA ){
+		for(final ProcessAndType a:process){
+			if ( a.getLenguage() == ProcessConfiguration.LENG_JAVA ){
 				new Thread(){
 					public void run(){
 						a.getActivity().init();
 					}
 				}.start();
 				
-			}else if ( a.getLenguage() == ActivityConfiguration.LENG_PYTHON ){
+			}else if ( a.getLenguage() == ProcessConfiguration.LENG_PYTHON ){
 				//Send init to Activity python
 				//NodeAddress na = routeTable.get(a.getID());																		
 			}
