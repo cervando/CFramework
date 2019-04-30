@@ -53,8 +53,9 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 			if (!conf.isLocal())
 				searchNodeRequest(((SearchNodeRequestMessage)m).getNodeID(), address);
 			
-		//}else if(m.getOperationCode()== OperationCodeConstants.SINGIN_AREA_NOTIFICATION){
+		}else if(m.getOperationCode()== OperationCodeConstants.SINGIN_AREA_NOTIFICATION){
 			//Add to the routing table
+			
 			
 		} else if (m.getOperationCode()== OperationCodeConstants.SEARCH_MULTICAST){										/* Un vecino solicita una direcciones */
 			SearchMulticastMessage smm = (SearchMulticastMessage)m;			
@@ -115,11 +116,11 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	}
 	
 	
-	private void SingInAreaNotification(long myID, Address address){
+	public void SendSingInAreaNotification(NodeAddress address){
 		multicastConection.send(
 				new SingInAreaNotificationMessage(
-						myID,  
-						address.getIp(),  
+						address.getName(),
+						address.getHost(),  
 						address.getPort()
 				).toByteArray()
 		);

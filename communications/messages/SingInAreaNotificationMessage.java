@@ -24,9 +24,27 @@ public class SingInAreaNotificationMessage extends Message {
 				);
 	}
 	
+	
+	public SingInAreaNotificationMessage( NodeAddress address){
+		this.type = OperationCodeConstants.SINGIN_AREA_NOTIFICATION;
+		this.msg = 
+				BinaryHelper.mergeByteArrays(
+						BinaryHelper.shortToByte(type), 
+						address.toByteArray()
+				);
+	}
+	
+	
+	
 	public long getNodeID(){
 		return BinaryHelper.byteToLong(msg, 2);
 	}
+	
+	
+	public NodeAddress getAddress() {
+		return new NodeAddress(getNodeID(), getIP(), getPort());
+	}
+	
 	
 	public String getIP(){
 		return BinaryHelper.byteToIP(msg, 6 + 4);

@@ -93,7 +93,13 @@ public class AreaProtocols implements Protocol{
 		
 	}
 	
-	//Look in the route table for it, if it exist, send the results to the address Argument
+	
+	/**
+	 * This could only be called when a process dont find an addres
+	 * Look in the route table for it, if it exist, send the results to the address Argument
+	 * @param idNode node been locked
+	 * @param address	logical address asking for the node
+	 */
 	public void searchNodeRequest(long idNode, Address address){
 		NodeAddress node = routeTable.get(idNode);
 		if ( node != null){
@@ -102,9 +108,10 @@ public class AreaProtocols implements Protocol{
 					new FindNodeMessage(idNode, node.getAddress().getIp(), node.getAddress().getPort()).toByteArray()
 			);
 		
-		}else{																															//Ask to entity to broadcast
-			areaWrapper.sendtoFather(new NodeAddress(0, address), new SearchNodeRequestMessage(idNode).toByteArray());
-		}		
+		//Sending to Entity for broadcast
+		}else{
+			areaWrapper.sendtoEntity(new NodeAddress(0, address), new SearchNodeRequestMessage(idNode).toByteArray());
+		}
 	}
 	
 	//One of my activities receive a new route, add to routeTable
@@ -153,8 +160,11 @@ public class AreaProtocols implements Protocol{
 			//TODO
 			//Ask to entity to broadcast
 			log.debug("NOT FOUND, Looking for:", sendToID);
-			areaWrapper.sendtoFather(new NodeAddress(myNodeID, myCommunications.getAddress()), new SearchNodeRequestMessage(sendToID).toByteArray());
+			areaWrapper.sendtoEntity(new NodeAddress(myNodeID, myCommunications.getAddress()), new SearchNodeRequestMessage(sendToID).toByteArray());
 			return false;
+		}else if ( node.getHost().equals("0.0.0.0")){
+			log.message("Blakcbox");
+			return true;
 		}else{
 			//What is the need for this if?
 			if ( senderID == myNodeID)

@@ -3,6 +3,7 @@ package cFramework.nodes.routers;
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.NodeAddress;
 import cFramework.communications.Protocol;
+import cFramework.communications.messages.SingInAreaNotificationMessage;
 import cFramework.communications.p2p.AreaProtocols;
 import cFramework.communications.p2p.EntityProtocols;
 import cFramework.log.NodeLog;
@@ -12,7 +13,7 @@ import cFramework.nodes.NodeConf;
 public class RouterWrapper extends Node{
 
 	NodeAddress father;
-	EntityProtocols fatherProtocols;
+	EntityProtocols entityProtocols;
 	AreaProtocols protocols;
 	private Router area;
 	private ProcessInitializer activities;
@@ -20,7 +21,7 @@ public class RouterWrapper extends Node{
 	private NodeLog log;
 	
 	public RouterWrapper(Router area, EntityProtocols entityCommunication, NodeConf nc){
-		this.fatherProtocols = entityCommunication;
+		this.entityProtocols = entityCommunication;
 		this.nc = nc;
 		this.area = area;	
 		log = new NodeLog(area.getID(), area.getNamer(), nc.isDebug());
@@ -41,6 +42,8 @@ public class RouterWrapper extends Node{
 		//The thread is to avoid blocking behavior, but it could produce Asynchrony
 		//new Thread(){
 			//public void run(){
+				//sendtoEntity(protocols.getNodeAddress() , new SingInAreaNotificationMessage(protocols.getNodeAddress()).toByteArray()  );
+				entityProtocols.SendSingInAreaNotification(protocols.getNodeAddress());
 				area.init();
 				activities.initAll();
 			//}
@@ -92,8 +95,8 @@ public class RouterWrapper extends Node{
 		this.father = father;
 	}
 	
-	public void sendtoFather(NodeAddress senderAddress, byte[] message){
-		fatherProtocols.receive(senderAddress.getAddress(), message);
+	public void sendtoEntity(NodeAddress senderAddress, byte[] message){
+		entityProtocols.receive(senderAddress.getAddress(), message);
 	}
 	
 	public NodeConf getConfiguration(){

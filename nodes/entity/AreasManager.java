@@ -11,6 +11,7 @@ import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
 import cFramework.nodes.routers.Router;
 import cFramework.nodes.routers.RouterWrapper;
+import cFramework.util.IDHelper;
 
 public class AreasManager {
 
@@ -44,6 +45,14 @@ public class AreasManager {
 		for ( int i = 0; i < areasNames.length; i++){
 			add(areasNames[i],nc);
 		}
+		
+		//Wait tree seconds for others instances of this entity to ignite
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Call the init method for all the areas
 		initAllAreas();
 	}
@@ -71,7 +80,16 @@ public class AreasManager {
 	 */
 	public RouterWrapper add(String areaClassName, NodeConf nc){
 		entityLog.developer("Adding area " + areaClassName + " to entity");
-		Router area = getAreaObject(areaClassName);										//Iniciar
+		
+		
+		
+		String[] areaArray = areaClassName.split(":"); 
+		if ( areaArray.length > 1 && areaArray[1].equals("BLACKBOX")) {
+			new NodeAddress( IDHelper.generateID(areaArray[0]) , "0.0.0.0", 0);
+		}
+		
+		
+		Router area = getAreaObject(areaArray);										//Iniciar
 		if ( area == null )
 			return null;
 		
@@ -102,16 +120,12 @@ public class AreasManager {
 	 * areaName:parameter 1 class:parameter 1 value: ... :parameter N class:parameter N value
 	 * @return Instantiated Area object or null if an error happened
 	 */
-	private Router getAreaObject(String areaClassConf){
-		//Here you need to separate the className and the Arguments of the constructor
-		String[] area = areaClassConf.split(":"); 
+	private Router getAreaObject(String[] area){
+		//Here you need to separate the className and the Arguments of the constructor 
 		String areaClassName = area[0];
+		
+		
 		try {
-			Class<?> nodeClass = Class.forName(areaClassName); //Conseguir clase
-			Constructor<?> nodeConstr = nodeClass.getConstructor();
-			Router a = (Router)nodeConstr.newInstance();
-			if (area.length == 1 ) 
-				return a;
 			
 			//Get the Classes and values of the parameters
 			Class<?>[] parameterClasses = new Class<?>[(area.length -1)/2];
@@ -120,6 +134,18 @@ public class AreasManager {
 				parameterClasses[(i-1)/2]  = Class.forName(area[i]);
 				parametersObjects[(i-1)/2] = cast(parameterClasses[(i-1)/2], area[i+1]);
 			}
+			
+			
+			
+			
+			
+			Class<?> nodeClass = Class.forName(areaClassName); //Conseguir clase
+			Constructor<?> nodeConstr = nodeClass.getConstructor();
+			Router a = (Router)nodeConstr.newInstance();
+			if (area.length == 1 ) 
+				return a;
+			
+			
 			
 			
 			try {

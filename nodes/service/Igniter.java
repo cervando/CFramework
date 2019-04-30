@@ -48,6 +48,15 @@ public class Igniter {
 		areas.add(chain.toString());
 	}
 	
+	
+	
+	
+	public void addBlackBoxArea(String areaNames ) {
+		StringBuilder chain = new StringBuilder();
+		chain.append(areaNames);
+			chain.append(":BLACKBOX:TRUE");
+		areas.add(chain.toString());
+	}
 
 	
 
@@ -61,7 +70,7 @@ public class Igniter {
 	}
 	
 	
-	/**
+	/**areasArray
 	 * Ignites a new Service process
 	 */
 	private void initService(){
@@ -83,7 +92,7 @@ public class Igniter {
 	protected void run(){
 		//This propertie allows compatibility with OS X
 		System.setProperty("java.net.preferIPv4Stack" , "true");
-		//Log system for the igniter
+		//Log system for the igareasArrayniter
 		log = new NodeLog("Igniter", configuration.isDebug());
 		
 		if ( areas.size() == 0 ){
@@ -103,9 +112,6 @@ public class Igniter {
 		}else {
 			//Init P2P communication
 			protocols = new IgniterProtocols(log);
-
-
-			
 
 			try {
 				if ( !protocols.isServiceUP() ){
