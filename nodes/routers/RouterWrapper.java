@@ -43,7 +43,8 @@ public class RouterWrapper extends Node{
 		//new Thread(){
 			//public void run(){
 				//sendtoEntity(protocols.getNodeAddress() , new SingInAreaNotificationMessage(protocols.getNodeAddress()).toByteArray()  );
-				entityProtocols.SendSingInAreaNotification(protocols.getNodeAddress());
+				if ( !this.nc.isLocal())
+					entityProtocols.SendSingInAreaNotification(protocols.getNodeAddress());
 				area.init();
 				activities.initAll();
 			//}
@@ -79,6 +80,7 @@ public class RouterWrapper extends Node{
 	
 	
 	public boolean send(long nodeID, MessageMetadata m, byte[] data){
+		System.out.println("Sending to: " + nodeID);
 		return protocols.sendData(nodeID, m, data);
 	}
 	

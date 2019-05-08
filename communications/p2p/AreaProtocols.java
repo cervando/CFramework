@@ -1,6 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
+import java.util.List;
 
 import cFramework.communications.LocalJVMNodeAddress;
 import cFramework.communications.MessageMetadata;
@@ -101,11 +102,12 @@ public class AreaProtocols implements Protocol{
 	 * @param address	logical address asking for the node
 	 */
 	public void searchNodeRequest(long idNode, Address address){
-		NodeAddress node = routeTable.get(idNode);
+		List<NodeAddress> node = routeTable.get(idNode);
 		if ( node != null){
+			NodeAddress n = node.get(0);
 			myCommunications.send(
 					new NodeAddress(0, address), 
-					new FindNodeMessage(idNode, node.getAddress().getIp(), node.getAddress().getPort()).toByteArray()
+					new FindNodeMessage(idNode, n.getAddress().getIp(), n.getAddress().getPort()).toByteArray()
 			);
 		
 		//Sending to Entity for broadcast
@@ -146,7 +148,7 @@ public class AreaProtocols implements Protocol{
 			senderID = myNodeID;
 		
 		
-		NodeAddress node;
+		List<NodeAddress> node;
 		//This if is a validation to assure a message to anoter area is send to the Area instead of the activity
 		if ( IDHelper.isActivitiy(sendToID) && IDHelper.getAreaID(sendToID) != myNodeID ){
 			node = routeTable.get(IDHelper.getAreaID(sendToID) );
@@ -162,14 +164,24 @@ public class AreaProtocols implements Protocol{
 			log.debug("NOT FOUND, Looking for:", sendToID);
 			areaWrapper.sendtoEntity(new NodeAddress(myNodeID, myCommunications.getAddress()), new SearchNodeRequestMessage(sendToID).toByteArray());
 			return false;
-		}else if ( node.getHost().equals("0.0.0.0")){
-			log.message("Blakcbox");
-			return true;
-		}else{
-			//What is the need for this if?
-			if ( senderID == myNodeID)
-				log.send_debug(sendToID, "");
-			return myCommunications.send(node, new DataMessage(senderID, sendToID,meta, data).toByteArray());
+		}else {
+			
+			boolean sended = true;
+			for ( int i = 0; i < node.size(); i++ ) {
+				if ( node.get(i).getHost().equals("0.0.0.0"))
+					log.message("Blakcbox");
+				else {
+					//What is the need for this if?, why would i send a message to myself
+					//if ( senderID == myNodeID)
+					log.send_debug(sendToID, "");
+					sended = sended & myCommunications.send(node.get(i), new DataMessage(senderID, sendToID, meta, data).toByteArray());
+				}
+			}
+			return sended;
+			
+			
+			
+			//return myCommunications.send(node, new DataMessage(senderID, sendToID,meta, data).toByteArray());
 		}
 	}
 

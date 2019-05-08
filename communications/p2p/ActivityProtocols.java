@@ -1,6 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
+import java.util.List;
 
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.NodeAddress;
@@ -101,7 +102,7 @@ public class ActivityProtocols implements Protocol{
 	public boolean sendData(long sendToID, MessageMetadata meta, byte[] data){
 		log.send_debug(sendToID, "");
 		long senderID = myNodeID;
-		NodeAddress node;
+		List<NodeAddress> node;
 		if ( IDHelper.getAreaID(sendToID) != father.getName() ){
 			node = routeTable.get(IDHelper.getAreaID(sendToID) );
 			//senderID = IDHelper.getAreaID(senderID);
@@ -116,8 +117,12 @@ public class ActivityProtocols implements Protocol{
 			searchNodeRequest(sendToID);
 			//Add to pending messages
 			return false;
-		}else
-			return myCommunications.send(node, new DataMessage(senderID, sendToID, meta, data).toByteArray());		
+		}else {
+			boolean sended = true;
+			for ( int i = 0; i < node.size(); i++ )
+				sended = sended & myCommunications.send(node.get(i), new DataMessage(senderID, sendToID, meta, data).toByteArray());
+			return sended;
+		}
 	}
 	
 	@Override

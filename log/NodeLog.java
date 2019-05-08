@@ -27,7 +27,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import cFramework.communications.fiels.Address;
 import cFramework.util.IDHelper;
 import cFramework.util.OSHelper;

@@ -6,7 +6,7 @@ public class IDHelper {
 
 	private static int AreaLeftShift = 32;
 	
-	//private static int AREAMASK = 0b111111111111 << AreaLeftShift;
+	private static long ACTIVITYMASK = 0b0000000000000000000000000000000011111111111111111111111111111111L;
 	//private static int ACTIVITYMASK = 0b11111 << ActivityLeftShift;
 	
 	
@@ -24,7 +24,7 @@ public class IDHelper {
 	}
 	
 	public static long getAreaID(long ID){
-		return (long)((ID >> AreaLeftShift) << AreaLeftShift);
+		return ((long)(ID >> AreaLeftShift) << AreaLeftShift);
 	}
 	
 	public static final long generateID(int AreaID, int ActivityID, int index){
@@ -44,8 +44,8 @@ public class IDHelper {
 	
 	
 	public static final long generateID(String areaName, String activityName){
-		return  ((areaName.hashCode() << AreaLeftShift )) +
-				activityName.hashCode();
+		return  (((long)areaName.hashCode()) << AreaLeftShift ) |
+				(ACTIVITYMASK & activityName.hashCode());
 	}
 	
 	

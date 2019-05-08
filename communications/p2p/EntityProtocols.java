@@ -1,6 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
+import java.util.List;
 
 import cFramework.communications.BinaryArrayNotificable;
 import cFramework.communications.NodeAddress;
@@ -127,14 +128,15 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	}
 	
 	private void SearchNodeMulticast(Address address, long lookedNodeID){
-		NodeAddress node = routeTable.get(lookedNodeID);
-		if ( node != null ){
+		List<NodeAddress> nodes = routeTable.get(lookedNodeID);
+		if ( nodes != null ){
+			//Todo add multiple nodes response
 			myCommunications.send(
 						new NodeAddress(0, address), 
 						new FindNodeMessage(
 								lookedNodeID, 
-								node.getHost(), 
-								node.getPort()
+								nodes.get(0).getHost(), 
+								nodes.get(0).getPort()
 						).toByteArray()
 			);
 		}

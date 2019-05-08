@@ -54,8 +54,8 @@ public class ProcessInitializer {
 		ProcessWrapper core = new ProcessWrapper(activity, fatherAddress, pc);						//Add the area to a wrapper
 		activity.setCore(core);
 		LocalJVMNodeAddress activityNode = new LocalJVMNodeAddress(core.getProtocol().getNodeAddress(), core);
-		
 		SingletonNodeRouteTable.getInstance().set(activityNode);
+		//System.out.println("Add proccess to router " + activityNode.getName());
 		a.setActivity(activity);
 	}
 	
