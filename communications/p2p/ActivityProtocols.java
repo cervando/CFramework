@@ -1,6 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cFramework.communications.MessageMetadata;
@@ -60,8 +61,7 @@ public class ActivityProtocols implements Protocol{
 			
 		}else if ( OPCode == OperationCodeConstants.FIND_NODE ){
 			FindNodeMessage fnm = (FindNodeMessage)m; 
-			findNode( fnm.getNodeID(), new Address( fnm.getIP(), fnm.getPort()) );
-			
+			findNode( fnm.getNodes() );
 		}
 	}
 	
@@ -71,23 +71,24 @@ public class ActivityProtocols implements Protocol{
 	}
 	
 	//The node i was looking for, add to route table, then send pending messages
-	public void findNode(long idNode, Address address){
+	public void findNode(ArrayList<NodeAddress> nodes){
+		if ( nodes.size() == 0 )
+			return;
 		//Add to route table
-		if ( routeTable.exist(idNode)){
-		
-		}else
-			routeTable.set(new NodeAddress(idNode, address));
+		routeTable.set(nodes);
 		//Send pending messages
 		
 		//Send the new direction to the service
-		update();
+		//update();
 	}
 	
 
+	/*
 	//One of my activities receive a new route, add to routeTable
 	public void update(){
 		
 	}
+	*/
 	
 	//Get ID from the IP, then send to user implementetation
 	private void data(Address address, DataMessage msg){

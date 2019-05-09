@@ -191,7 +191,7 @@ public class LongSpike<  L extends Serializable, I extends Serializable, T exten
 	 * Fast method to obtain just the Location of a Spike.
 	 * It needs the data type <M> of the Object Location
 	 */
-	private <M> M getLocation(byte[] spike) throws IOException, ClassNotFoundException{
+	/*private <M> M getLocation(byte[] spike) throws IOException, ClassNotFoundException{
 		byte [] tmp = new byte[2];
 		System.arraycopy(spike, 2, tmp, 0, 2);
 		ByteBuffer buffer = ByteBuffer.wrap(tmp);
@@ -211,7 +211,7 @@ public class LongSpike<  L extends Serializable, I extends Serializable, T exten
 			if(i != null) i.close();
 		}
 		return (M) o;
-	}
+	}*/
 	
 	
 	/**Set-Get methods**/
@@ -336,6 +336,7 @@ public class LongSpike<  L extends Serializable, I extends Serializable, T exten
 		return buffer.getShort();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private <M> M objectFromByte(byte[] bytes) throws IOException, ClassNotFoundException{
         Object o=null;
 		ByteArrayInputStream b = new ByteArrayInputStream(bytes);

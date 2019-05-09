@@ -73,7 +73,7 @@ public class ProcessInitializer {
 	}
 	
 	public void createPythonActivity(ProcessAndType a, NodeAddress fatherAddress, NodeConf nc){
-			
+			log.developer("Adding Python Proccess " + a.getClassName());
 			String pythonLib = getPythonLibrary();
 			if ( pythonLib == null){
 				System.out.println("Python lib not finded, add it next to your middleware library");
@@ -85,13 +85,13 @@ public class ProcessInitializer {
 			pc = new ProcessConfiguration(nc.toInt() | a.getActivityConfiguration().toInt());
 			
 			String command = "python ";
-			command += OSHelper.preparePath(pythonLib + OSHelper.preparePathSegment("/node/activityWrapper.py")) + " ";
+			command += OSHelper.preparePath(pythonLib + OSHelper.preparePathSegment("/ProcessWrapper.py")) + " ";
 			command += a.getClassName() + " "; //classNameArgs;
 			command += fatherAddress.getAddress().getIp()+":"+ fatherAddress.getAddress().getPort() + " ";//fatherArgs;
 			command += pc.toInt() + " "; //optionsArgs;
 			command += OSHelper.preparePath(System.getProperty("java.class.path"));
 			//command += namerArgs;
-			System.out.println(command);
+			//System.out.println(command);
 			OSHelper.exec(command);
 	}
 	

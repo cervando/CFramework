@@ -1,6 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cFramework.communications.LocalJVMNodeAddress;
@@ -62,12 +63,10 @@ public class AreaProtocols implements Protocol{
 						//}
 						
 		}else if ( m.getOperationCode() == OperationCodeConstants.SINGIN_ACTIVITY ){
-						singInActivity( ((SingInActivityMessage)m).getNodeID(), address);
-			
-						
+			singInActivity( ((SingInActivityMessage)m).getNodeID(), address);						
 		}else if ( m.getOperationCode() == OperationCodeConstants.FIND_NODE ){
 						FindNodeMessage fnm = (FindNodeMessage)m; 
-						findNode( fnm.getNodeID(), new Address( fnm.getIP(), fnm.getPort()) );
+						findNode( fnm.getNodes() );
 			
 						
 		}else if ( m.getOperationCode() == OperationCodeConstants.UPDATE ){
@@ -81,12 +80,17 @@ public class AreaProtocols implements Protocol{
 	
 	//Add this to the routing table, for non-java Activity
 	public void singInActivity(long idNode, Address address){
-		
+		//log.developer("Adding class " + a.getClassName());
+		routeTable.set(new NodeAddress(idNode, address));
 	}
 	
 	//The node i was looking for, add to route table, then send pending messages
-	public void findNode(long idNode, Address address){
-		addedToRouteTable(idNode, address);
+	public void findNode(ArrayList<NodeAddress> nodes){
+		if ( nodes.size() == 0 )
+			return;
+		//Add to route table
+		routeTable.set(nodes);
+		//Send pending messages
 	}
 	
 	//The node was succefully added to the route table, send pending messages
@@ -102,12 +106,11 @@ public class AreaProtocols implements Protocol{
 	 * @param address	logical address asking for the node
 	 */
 	public void searchNodeRequest(long idNode, Address address){
-		List<NodeAddress> node = routeTable.get(idNode);
-		if ( node != null){
-			NodeAddress n = node.get(0);
+		ArrayList<NodeAddress> node = routeTable.get(idNode);
+		if ( node != null && node.size() != 0 ){
 			myCommunications.send(
 					new NodeAddress(0, address), 
-					new FindNodeMessage(idNode, n.getAddress().getIp(), n.getAddress().getPort()).toByteArray()
+					new FindNodeMessage( node ).toByteArray()
 			);
 		
 		//Sending to Entity for broadcast

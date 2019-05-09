@@ -20,7 +20,7 @@ public class ProcessWrapper extends Node {
 		activity = p.getClass();
 		log = new NodeLog(p.getID(), p.getNamer(), nc.isDebug());
 		p.setLog(log);
-		
+		log.developer( Long.toString( p.getID() ) );
 		protocols = new ActivityProtocols(p.getID(), father, this, nc, log);
 		manager = new ProcessMessageManager(activity, this, nc,log);
 	}

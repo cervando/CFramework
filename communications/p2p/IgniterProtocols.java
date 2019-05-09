@@ -7,8 +7,6 @@ import cFramework.communications.Protocol;
 import cFramework.communications.fiels.Address;
 import cFramework.communications.messages.HelloMessage;
 import cFramework.communications.messages.IgniteEntityListMessage;
-import cFramework.communications.messages.base.Message;
-import cFramework.communications.messages.base.OperationCodeConstants;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
 import cFramework.util.DefaultValues;
@@ -17,7 +15,6 @@ public class IgniterProtocols implements Protocol{
 
 	P2PCommunications myCommunications;
 	private NodeAddress serviceAddress = new NodeAddress(0,"127.0.0.1", DefaultValues.SERVICE_PORT);
-	private boolean isServiceUP = false;
 	
 	
 	/**
@@ -34,11 +31,8 @@ public class IgniterProtocols implements Protocol{
 		
 	}
 	
+	
 	public void receive(Address address, byte[] message){
-		Message m = Message.getMessage(message);
-		if ( m.getOperationCode() == OperationCodeConstants.HANDSHAKE ){
-			isServiceUP = true;
-		}
 	}
 	
 	

@@ -1,7 +1,7 @@
 package cFramework.communications.p2p;
 
 import java.net.BindException;
-import java.util.List;
+import java.util.ArrayList;
 
 import cFramework.communications.BinaryArrayNotificable;
 import cFramework.communications.NodeAddress;
@@ -46,7 +46,7 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 			
 		if ( m.getOperationCode() == OperationCodeConstants.FIND_NODE ){
 			FindNodeMessage fnm = (FindNodeMessage)m; 
-			findNode( fnm.getNodeID(), new Address( fnm.getIP(), fnm.getPort()) );
+			findNode( fnm.getNodes() );
 			
 		}else if ( m.getOperationCode() == OperationCodeConstants.UPDATE ){
 			
@@ -73,18 +73,12 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	 * @param idNode
 	 * @param address
 	 */
-	private void findNode(long idNode, Address address){		
-		addedToRouteTable(idNode, address);
-		
-	}
-	
-	/**
-	 * The node was succefully added to the route table, send pending messages
-	 * @param idNode
-	 * @param address
-	 */
-	private void addedToRouteTable(long idNode, Address address){
-		routeTable.set(new NodeAddress(idNode, address));
+	private void findNode(ArrayList<NodeAddress> nodes){		
+		if ( nodes.size() == 0 )
+			return;
+		//Add to route table
+		routeTable.set(nodes);
+		//Send pending messages
 		
 	}
 	
@@ -104,10 +98,6 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 		);
 	}
 	
-	//One of my activities receive a new route, add to routeTable
-	private void update(){
-		
-	}
 	
 	
 	@Override
@@ -128,15 +118,13 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	}
 	
 	private void SearchNodeMulticast(Address address, long lookedNodeID){
-		List<NodeAddress> nodes = routeTable.get(lookedNodeID);
-		if ( nodes != null ){
+		ArrayList<NodeAddress> nodes = routeTable.get(lookedNodeID);
+		if ( nodes != null && nodes.size() != 0 ){
 			//Todo add multiple nodes response
 			myCommunications.send(
 						new NodeAddress(0, address), 
 						new FindNodeMessage(
-								lookedNodeID, 
-								nodes.get(0).getHost(), 
-								nodes.get(0).getPort()
+							nodes
 						).toByteArray()
 			);
 		}

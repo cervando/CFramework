@@ -83,7 +83,7 @@ public class P2PCommunications implements BinaryArrayNotificable {
 	 * @param message
 	 */
 	public boolean send(NodeAddress address, byte[] message){
-		if ( address instanceof LocalJVMNodeAddress ) {
+		if ( false && address instanceof LocalJVMNodeAddress ) {
 			((LocalJVMNodeAddress) address).getNodeReference().receive(myAddress, message);
 			return true;
 		}else{

@@ -3,7 +3,6 @@ package cFramework.nodes.routers;
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.NodeAddress;
 import cFramework.communications.Protocol;
-import cFramework.communications.messages.SingInAreaNotificationMessage;
 import cFramework.communications.p2p.AreaProtocols;
 import cFramework.communications.p2p.EntityProtocols;
 import cFramework.log.NodeLog;
@@ -27,6 +26,7 @@ public class RouterWrapper extends Node{
 		log = new NodeLog(area.getID(), area.getNamer(), nc.isDebug());
 		area.setLog(log);
 		area.setCore(this);
+		log.developer( Long.toString( area.getID() ) );
 	}
 	
 	public void setUp(){
@@ -80,7 +80,6 @@ public class RouterWrapper extends Node{
 	
 	
 	public boolean send(long nodeID, MessageMetadata m, byte[] data){
-		System.out.println("Sending to: " + nodeID);
 		return protocols.sendData(nodeID, m, data);
 	}
 	

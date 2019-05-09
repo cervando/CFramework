@@ -1,7 +1,10 @@
 package cFramework.nodes.entity;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.BindException;
+import java.util.concurrent.Semaphore;
 
 import cFramework.communications.messages.MessageReceiverable;
 import cFramework.communications.messages.base.Message;
@@ -11,6 +14,7 @@ import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
 import cFramework.util.DefaultValues;
+import cFramework.util.IDHelper;
 
 public class Entity implements MessageReceiverable{
 
@@ -44,6 +48,34 @@ public class Entity implements MessageReceiverable{
 		areas = new AreasManager(routeTable, communications, log);
 		//The area manager init the list of Areas
 		areas.addList(areasNames, nc);		
+		
+		//Listen for Messages requests
+		new Thread(){
+			public void run(){
+				BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
+				
+				String command;
+				while (true) {
+					try {
+						command = buffer.readLine();
+						String words[] = command.split(" ");
+						if ( words[0].toUpperCase().equals("FAIL") ) {
+							long id = 0;
+							if ( words.length == 3) { 
+								id = IDHelper.generateID(words[1], words[2]);
+							}else 
+								id = IDHelper.generateID(words[1]);
+							// TODO
+							System.out.println("send fail to ID: " + id);
+							//communications.sendFailMessage(id);
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 	}
 	
 	@Override

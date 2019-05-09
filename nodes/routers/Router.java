@@ -68,9 +68,7 @@ public abstract class Router {
 	
 	
 	
-	public void receive(long nodeID, byte[] data) {
-		log.message("Message recived but Function receive not overwritted");
-	}
+	public abstract void receive(long nodeID, byte[] data);
 	
 	
 	public void process(long nodeID, byte[] data){

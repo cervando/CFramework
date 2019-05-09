@@ -24,7 +24,7 @@ public class TCPSocketListener extends Thread{
 			        new DataInputStream(socket.getInputStream());
 			
 			int incomingPort = in.readUnsignedShort();
-			int fragmentSize = 64000;
+			int fragmentSize = 32000;
 			byte[] messageFragment = new byte[fragmentSize];
 			int readed = 0;
 			int messageLengt = 0;

@@ -81,14 +81,28 @@ public class BinaryHelper {
 	
 	public static long byteToLong(byte[] bin, int startIndex){
 		long r = 0;
-		r += (((long) bin[startIndex    ] << 56 ) & 0xFFFFFFFFFFFFFFFFL);
+		r += (((long)bin[startIndex    ] << 56 ) & 0xFFFFFFFFFFFFFFFFL);
 		r += (((long)bin[startIndex + 1] << 48 ) & 0xFFFFFFFFFFFFFFL);
 		r += (((long)bin[startIndex + 2] << 40 ) & 0xFFFFFFFFFFFFL);
 		r += (((long)bin[startIndex + 3] << 32 ) & 0xFFFFFFFFFFL);
-		r += (((long)bin[startIndex + 4] << 24 ) & 0xFFFFFFFF);
-		r += (((long)bin[startIndex + 5] << 16 ) & 0xFFFFFF);
-		r += (((long)bin[startIndex + 6] << 8  ) & 0xFFFF);
-		r += (bin[startIndex  + 7] 	     & 0xFF);
+		r += (((long)bin[startIndex + 4] << 24 ) & 0xFFFFFFFFL);
+		r += (((long)bin[startIndex + 5] << 16 ) & 0xFFFFFFL);
+		r += (((long)bin[startIndex + 6] << 8  ) & 0xFFFFL);
+		r += (bin[startIndex  + 7] 	     		 & 0xFFL);
+		return r;
+	}
+	
+	
+	public static byte[] longToByte( long i ){
+		byte r[] = new byte[8];
+		r[0] = (byte) ((i >> 56) & 0xFF);
+		r[1] = (byte) ((i >> 48) & 0xFF);
+		r[2] = (byte) ((i >> 40) & 0xFF);
+		r[3] = (byte) ((i >> 32) & 0xFF);
+		r[4] = (byte) ((i >> 24) & 0xFF);
+		r[5] = (byte) ((i >> 16) & 0xFF);
+		r[6] = (byte) ((i >> 8)  & 0xFF);
+		r[7] = (byte) (   i  	 & 0xFF);
 		return r;
 	}
 	
@@ -137,20 +151,6 @@ public class BinaryHelper {
 		r[1] = (byte) ((i >> 16) & 0xFF);
 		r[2] = (byte) ((i >> 8)  & 0xFF);
 		r[3] = (byte) (   i  	 & 0xFF);
-		return r;
-	}
-	
-	
-	public static byte[] longToByte( long i ){
-		byte r[] = new byte[8];
-		r[0] = (byte) ((i >> 56) & 0xFF);
-		r[1] = (byte) ((i >> 48) & 0xFF);
-		r[2] = (byte) ((i >> 40)  & 0xFF);
-		r[3] = (byte) ((i >> 32)  & 0xFF);
-		r[4] = (byte) ((i >> 24) & 0xFF);
-		r[5] = (byte) ((i >> 16) & 0xFF);
-		r[6] = (byte) ((i >> 8)  & 0xFF);
-		r[7] = (byte) (   i  	 & 0xFF);
 		return r;
 	}
 	
