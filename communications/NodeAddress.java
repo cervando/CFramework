@@ -4,7 +4,11 @@ import cFramework.communications.fiels.Address;
 import cFramework.communications.fiels.NullValueConstants;
 import cFramework.util.BinaryHelper;
 
-
+/** Class containing ID, IP, PORT from a framework node
+ * 
+ * @author Armando Cervantes
+ *
+ */
 public class NodeAddress implements NullValueConstants {
     protected long name = NULL_INT;
 	protected Address address;
