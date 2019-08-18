@@ -16,6 +16,11 @@ import cFramework.nodes.NodeConf;
 import cFramework.util.DefaultValues;
 import cFramework.util.IDHelper;
 
+/**
+ * 
+ * @author Armando Cervantes
+ *
+ */
 public class Entity implements MessageReceiverable{
 
 	EntityProtocols communications;
@@ -49,7 +54,7 @@ public class Entity implements MessageReceiverable{
 		//The area manager init the list of Areas
 		areas.addList(areasNames, nc);		
 		
-		//Listen for Messages requests
+		//This allow the System to receive command directly from console
 		new Thread(){
 			public void run(){
 				BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
