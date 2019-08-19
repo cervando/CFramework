@@ -39,6 +39,8 @@ import java.net.UnknownHostException;
 import cFramework.communications.BinaryArrayNotificable;
 import cFramework.communications.fiels.Address;
 import cFramework.log.NodeLog;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class TCPPort implements Port {
 	
@@ -67,20 +69,20 @@ public class TCPPort implements Port {
 		try {
 			serverSocket = new ServerSocket(port);									//Starts the socket and bind it to any free port
 			myAddress.setPort( serverSocket.getLocalPort() );
-			InetAddress addr;
-			try {
-				addr = InetAddress.getLocalHost();									//Get IP address
-				String ip = addr.getHostAddress();
-				if(ip.equals("0.0.0.0") || ip.equals("127.0.1.1")) {				//Modify Address, this is to prevent bugs on diferent opearating systems
-					ip = "127.0.0.1";
-				}
-				myAddress.setIp(ip);
-				run = true;
-			} catch (UnknownHostException ex) {
-				log.debug(ex.getMessage());
-				//ex.printStackTrace();
-				return null;
-			}
+                        String ip = "127.0.0.1";
+                        Enumeration en = NetworkInterface.getNetworkInterfaces();
+                        while(en.hasMoreElements()){
+                            NetworkInterface ni=(NetworkInterface) en.nextElement();
+                            Enumeration ee = ni.getInetAddresses();
+                            while(ee.hasMoreElements()) {
+                                InetAddress ia= (InetAddress) ee.nextElement();
+                                if ( !ia.equals("127.0.0.1") && !ia.equals("127.0.1.1") && !ia.equals("0.0.0.0"))
+                                    ip = ia.getHostAddress();
+                            }
+                        }
+
+                        myAddress.setIp(ip);
+                        run = true;
         }
         catch (IOException socketException) {
             log.debug(socketException.toString());

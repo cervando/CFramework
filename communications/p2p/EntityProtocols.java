@@ -76,6 +76,8 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	private void findNode(ArrayList<NodeAddress> nodes){		
 		if ( nodes.size() == 0 )
 			return;
+                
+                
 		//Add to route table
 		routeTable.set(nodes);
 		//Send pending messages
