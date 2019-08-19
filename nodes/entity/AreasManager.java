@@ -9,14 +9,14 @@ import cFramework.communications.p2p.EntityProtocols;
 import cFramework.communications.routeTables.NodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.routers.Router;
-import cFramework.nodes.routers.RouterWrapper;
+import cFramework.nodes.area.Area;
+import cFramework.nodes.area.AreaWrapper;
 import cFramework.util.IDHelper;
 
 public class AreasManager {
 
 	private NodeRouteTable routeTable;
-	private ArrayList<RouterWrapper> areas;
+	private ArrayList<AreaWrapper> areas;
 	private EntityProtocols protocols;
 	private NodeLog entityLog;
 	
@@ -65,7 +65,7 @@ public class AreasManager {
 	 * @param nc
 	 */
 	public void addAndInit(String areaClassName, NodeConf nc){
-		RouterWrapper area = add(areaClassName,nc);
+		AreaWrapper area = add(areaClassName,nc);
 		if ( area != null )
 			area.init();
 	}
@@ -78,7 +78,7 @@ public class AreasManager {
 	 * @param nc			Node configuration for the area
 	 * @return	Instantiated Area Object
 	 */
-	public RouterWrapper add(String areaClassName, NodeConf nc){
+	public AreaWrapper add(String areaClassName, NodeConf nc){
 		entityLog.developer("Adding area " + areaClassName + " to entity");
 		
 		
@@ -89,12 +89,12 @@ public class AreasManager {
 		}
 		
 		
-		Router area = getAreaObject(areaArray);										//Iniciar
+		Area area = getAreaObject(areaArray);										//Iniciar
 		if ( area == null )
 			return null;
 		
 		//Add the area to a wrapper
-		RouterWrapper core = new RouterWrapper(area,protocols,nc);
+		AreaWrapper core = new AreaWrapper(area,protocols,nc);
 		core.setUp();
 		
 		//Add the wrapper to the list 
@@ -108,7 +108,7 @@ public class AreasManager {
 	
 	public void initAllAreas(){
 		entityLog.developer("Runing Area's init methods");
-		for ( RouterWrapper area : areas){
+		for ( AreaWrapper area : areas){
 			area.init();
 		}
 	}
@@ -120,7 +120,7 @@ public class AreasManager {
 	 * areaName:parameter 1 class:parameter 1 value: ... :parameter N class:parameter N value
 	 * @return Instantiated Area object or null if an error happened
 	 */
-	private Router getAreaObject(String[] area){
+	private Area getAreaObject(String[] area){
 		//Here you need to separate the className and the Arguments of the constructor 
 		String areaClassName = area[0];
 		
@@ -141,7 +141,7 @@ public class AreasManager {
 			
 			Class<?> nodeClass = Class.forName(areaClassName); //Conseguir clase
 			Constructor<?> nodeConstr = nodeClass.getConstructor();
-			Router a = (Router)nodeConstr.newInstance();
+			Area a = (Area)nodeConstr.newInstance();
 			if (area.length == 1 ) 
 				return a;
 			

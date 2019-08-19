@@ -11,7 +11,7 @@ import cFramework.util.BinaryHelper;
  */
 public class NodeAddress implements NullValueConstants {
     protected long name = NULL_INT;
-	protected Address address;
+    protected Address address;
     protected int bits=0;
 	
 	public NodeAddress(){
@@ -24,7 +24,7 @@ public class NodeAddress implements NullValueConstants {
         bits+= (this.name==NULL_INT)?0:4;
     }
 
-	public NodeAddress(long name,String host,int port) {
+    public NodeAddress(long name,String host,int port) {
         this.name = name;
         address = new Address(host, port);
         bits+= (this.name==NULL_INT)?0:4;
@@ -32,7 +32,7 @@ public class NodeAddress implements NullValueConstants {
 		bits+= address.isNullPort()?0:1;
     }
 	
-	public NodeAddress(long name,Address a) {
+    public NodeAddress(long name,Address a) {
         this.name = name;
         address = a;
         bits+= (this.name==NULL_INT)?0:4;

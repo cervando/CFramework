@@ -19,7 +19,7 @@ import cFramework.communications.routeTables.NodeRouteTable;
 import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.routers.RouterWrapper;
+import cFramework.nodes.area.AreaWrapper;
 import cFramework.util.IDHelper;
 
 public class AreaProtocols implements Protocol{
@@ -29,10 +29,10 @@ public class AreaProtocols implements Protocol{
 	NodeConf nc;
 	P2PCommunications myCommunications;
 	NodeRouteTable routeTable;
-	RouterWrapper areaWrapper;
+	AreaWrapper areaWrapper;
 	NodeLog log;
 	
-	public AreaProtocols(long areaID,RouterWrapper wrapper, NodeConf nc, NodeLog log){
+	public AreaProtocols(long areaID,AreaWrapper wrapper, NodeConf nc, NodeLog log){
 		myNodeID = areaID;
 		areaWrapper = wrapper;
 		this.log = log;

@@ -1,4 +1,4 @@
-package cFramework.nodes.routers;
+package cFramework.nodes.area;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,13 +9,13 @@ import java.util.List;
 import cFramework.communications.MessageMetadata;
 import cFramework.communications.spikes.SpikeRouter;
 import cFramework.log.NodeLog;
-import cFramework.nodes.processes.Process;
-import cFramework.nodes.processes.ProcessAndType;
-import cFramework.nodes.processes.ProcessConfiguration;
+import cFramework.nodes.process.Process;
+import cFramework.nodes.process.ProcessAndType;
+import cFramework.nodes.process.ProcessConfiguration;
 
-public abstract class Router {
+public abstract class Area {
 
-	private RouterWrapper core;
+	private AreaWrapper core;
 	private ArrayList<ProcessAndType> process = new ArrayList<ProcessAndType>();
 	protected long ID;
 	protected Class<?> namer = null;
@@ -114,7 +114,8 @@ public abstract class Router {
 			
 		//I got Routers For this 
 		}else {
-			
+		
+                    
 			//For every Router that has this sender as input
 			for (SpikeRouter router:routesForThisSender) {
 				
@@ -142,7 +143,6 @@ public abstract class Router {
 						//spikeSet = queueSpikes.get(router.ROUTERID).get(m.time);
 						//System.out.println("ADDED DATA TO QUEUE SIZE:"+ spikeSet.size() +" TO ROUTER:" + router.ROUTERID + " TIME:" + m.time + " FROM:" + fromID);
 						
-						
 						//Check If the spike Set if complete
 						if ( spikeSet.size() == router.from.length ) {
 							//If it is Combine all the information
@@ -153,7 +153,7 @@ public abstract class Router {
 									send( i, ID, m, spike);
 								else
 									//System.out.println("WHY WOULD YOU SEND IT TO YOURSELF, this will create an infinite Bucle");
-									receive(fromID,  data);
+									receive(fromID,  spike);
 							}
 							//Delete Full Message
 							queueSpikes.get(router.ROUTERID).remove(m.time);
@@ -206,7 +206,7 @@ public abstract class Router {
 		return ID;
 	}
 	
-	public void setCore(RouterWrapper core){
+	public void setCore(AreaWrapper core){
 		this.core = core;
 	}
 	
@@ -259,7 +259,7 @@ public abstract class Router {
 		Method m;
 		try {
 			m = this.getClass().getMethod("init", parameterClasses);
-			if ( !m.toString().contains(Router.class.getName()) )
+			if ( !m.toString().contains(Area.class.getName()) )
 				m.invoke(this,parameterValues);
 		} catch (NoSuchMethodException | SecurityException e) {
 			System.out.println("Error getting init method");

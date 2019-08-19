@@ -18,7 +18,7 @@ import cFramework.communications.routeTables.NodeRouteTable;
 import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.processes.ProcessWrapper;
+import cFramework.nodes.process.ProcessWrapper;
 import cFramework.util.IDHelper;
 
 public class ActivityProtocols implements Protocol{

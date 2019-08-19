@@ -1,4 +1,4 @@
-package cFramework.nodes.processes;
+package cFramework.nodes.process;
 
 public class ProcessAndType {
 

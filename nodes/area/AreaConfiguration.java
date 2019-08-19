@@ -17,17 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Kuayolotl Middleware.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cFramework.nodes.routers;
+package cFramework.nodes.area;
 
 import cFramework.nodes.NodeConf;
 
-public class RouterConfiguration extends NodeConf {
+public class AreaConfiguration extends NodeConf {
 	
-	public RouterConfiguration(){
+	public AreaConfiguration(){
 		this(0);
 	}
 	
-	public RouterConfiguration(int val){
+	public AreaConfiguration(int val){
 		super(val);
 	}
 	

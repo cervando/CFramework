@@ -1,4 +1,4 @@
-package cFramework.nodes.routers;
+package cFramework.nodes.area;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -10,10 +10,10 @@ import cFramework.communications.NodeAddress;
 import cFramework.communications.routeTables.SingletonNodeRouteTable;
 import cFramework.log.NodeLog;
 import cFramework.nodes.NodeConf;
-import cFramework.nodes.processes.Process;
-import cFramework.nodes.processes.ProcessAndType;
-import cFramework.nodes.processes.ProcessConfiguration;
-import cFramework.nodes.processes.ProcessWrapper;
+import cFramework.nodes.process.Process;
+import cFramework.nodes.process.ProcessAndType;
+import cFramework.nodes.process.ProcessConfiguration;
+import cFramework.nodes.process.ProcessWrapper;
 import cFramework.util.OSHelper;
 
 public class ProcessInitializer {
@@ -43,7 +43,7 @@ public class ProcessInitializer {
 		log.developer("Adding class " + a.getClassName());
 		Process activity = getActivityObject(a.getClassName());
 		if (activity == null ){
-			log.developer("Activity " + a.getClassName() + "Does not exist");
+			log.developer("Activity " + a.getClassName() + " Does not exist");
 			return;
 		}
 		
@@ -116,7 +116,11 @@ public class ProcessInitializer {
 			if ( a.getLenguage() == ProcessConfiguration.LENG_JAVA ){
 				new Thread(){
 					public void run(){
-						a.getActivity().init();
+                                            try {
+                                                a.getActivity().init();
+                                            }catch(Exception e ){
+                                                log.developer("Error", a.getID());
+                                            }
 					}
 				}.start();
 				
