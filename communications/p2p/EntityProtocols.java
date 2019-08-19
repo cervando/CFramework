@@ -122,6 +122,8 @@ public class EntityProtocols implements BinaryArrayNotificable, Protocol{
 	private void SearchNodeMulticast(Address address, long lookedNodeID){
 		ArrayList<NodeAddress> nodes = routeTable.get(lookedNodeID);
 		if ( nodes != null && nodes.size() != 0 ){
+                    
+                    log.message(nodes.get(0).toString());
 			//Todo add multiple nodes response
 			myCommunications.send(
 						new NodeAddress(0, address), 

@@ -76,11 +76,10 @@ public class TCPPort implements Port {
                             Enumeration ee = ni.getInetAddresses();
                             while(ee.hasMoreElements()) {
                                 InetAddress ia= (InetAddress) ee.nextElement();
-                                if ( !ia.equals("127.0.0.1") && !ia.equals("127.0.1.1") && !ia.equals("0.0.0.0"))
+                                if ( !ia.getHostAddress().equals("127.0.0.1") && !ia.getHostAddress().equals("127.0.1.1") && !ia.getHostAddress().equals("0.0.0.0"))
                                     ip = ia.getHostAddress();
                             }
                         }
-
                         myAddress.setIp(ip);
                         run = true;
         }
